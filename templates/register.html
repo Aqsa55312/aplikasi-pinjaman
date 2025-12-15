@@ -1,0 +1,145 @@
+{% extends "base_auth.html" %}
+
+{% block title %}Register - Koperasi{% endblock %}
+
+{% block content %}
+<section class="relative min-h-screen overflow-hidden">
+  <!-- Background (tetap, kalau base_auth kamu sudah punya background, ini tetap aman) -->
+  <div class="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950/80 to-purple-950/70"></div>
+  <div class="absolute inset-0 [background:radial-gradient(900px_500px_at_30%_20%,rgba(255,255,255,0.10),transparent_60%)]"></div>
+  <div class="absolute inset-0 [background:radial-gradient(900px_500px_at_70%_70%,rgba(168,85,247,0.14),transparent_60%)]"></div>
+
+  <div class="relative z-10">
+    <div class="mx-auto max-w-6xl px-6 py-14">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+        <!-- LEFT -->
+        <div class="space-y-6">
+          <div class="inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
+            <div class="h-10 w-10 rounded-xl bg-white/10 grid place-items-center border border-white/10">
+              <span class="text-lg">🧾</span>
+            </div>
+            <div>
+              <div class="text-xs tracking-widest text-white/70">REGISTRASI</div>
+              <div class="text-sm font-semibold text-white/90">Buat akun baru (default role: user)</div>
+            </div>
+          </div>
+
+          <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight text-white drop-shadow">
+            Buat akun<br />
+            <span class="text-white/80">untuk mulai mengajukan pinjaman.</span>
+          </h1>
+
+          <p class="text-white/70 max-w-xl">
+            Isi data dengan benar. Setelah terdaftar, kamu bisa login dan mengajukan pinjaman dari dashboard.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl">
+            <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-4">
+              <div class="font-semibold text-white">Cepat</div>
+              <div class="text-sm text-white/70 mt-1">Form ringkas.</div>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-4">
+              <div class="font-semibold text-white">Akurat</div>
+              <div class="text-sm text-white/70 mt-1">Validasi wajib isi.</div>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-4">
+              <div class="font-semibold text-white">Aman</div>
+              <div class="text-sm text-white/70 mt-1">Akun terkontrol.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: CARD -->
+        <div class="lg:justify-self-end w-full">
+          <div class="w-full max-w-md rounded-3xl border border-white/10 bg-slate-900/65 backdrop-blur-xl shadow-xl">
+            <div class="p-6 border-b border-white/10">
+              <h2 class="text-2xl font-bold text-white">Registrasi</h2>
+              <p class="text-sm text-white/70 mt-1">Buat akun baru</p>
+            </div>
+
+            <div class="p-6">
+              <form method="POST" class="space-y-4">
+                <div class="space-y-1">
+                  <label class="text-sm text-white/80">Nama</label>
+                  <input
+                    name="nama"
+                    class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none
+                           placeholder:text-white/40 focus:ring-4 focus:ring-indigo-200/30"
+                    placeholder="Nama lengkap"
+                    required
+                  />
+                </div>
+
+                <div class="space-y-1">
+                  <label class="text-sm text-white/80">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none
+                           placeholder:text-white/40 focus:ring-4 focus:ring-indigo-200/30"
+                    placeholder="email@domain.com"
+                    required
+                  />
+                </div>
+
+                <div class="space-y-1">
+                  <label class="text-sm text-white/80">Telepon</label>
+                  <input
+                    name="telepon"
+                    class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none
+                           placeholder:text-white/40 focus:ring-4 focus:ring-indigo-200/30"
+                    placeholder="08xxxxxxxxxx"
+                    required
+                  />
+                </div>
+
+                <div class="space-y-1">
+                  <label class="text-sm text-white/80">Username</label>
+                  <input
+                    name="username"
+                    autocomplete="username"
+                    class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none
+                           placeholder:text-white/40 focus:ring-4 focus:ring-indigo-200/30"
+                    placeholder="username"
+                    required
+                  />
+                </div>
+
+                <div class="space-y-1">
+                  <label class="text-sm text-white/80">Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    autocomplete="new-password"
+                    class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none
+                           placeholder:text-white/40 focus:ring-4 focus:ring-indigo-200/30"
+                    placeholder="Buat password"
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  class="w-full rounded-xl bg-white text-slate-900 font-semibold py-3 transition hover:bg-white/90"
+                >
+                  Daftar
+                </button>
+
+                <p class="text-sm text-white/70 text-center">
+                  Sudah punya akun?
+                  <a href="{{ url_for('login') }}" class="font-semibold text-white hover:underline">Login</a>
+                </p>
+              </form>
+            </div>
+          </div>
+
+          <div class="mt-6 text-center text-xs text-white/50">
+            © 2025 Koperasi Simpan Pinjam
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

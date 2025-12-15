@@ -1,0 +1,44 @@
+{% extends "base_app.html" %}
+{% block title %}Pinjaman Saya - Koperasi{% endblock %}
+
+{% block content %}
+  <div class="mb-6">
+    <h1 class="text-2xl font-extrabold text-white drop-shadow">Pinjaman Saya</h1>
+    <p class="text-white/80 mt-1">Daftar pinjaman yang kamu ajukan.</p>
+  </div>
+
+  <div class="rounded-3xl bg-white/80 backdrop-blur border border-white/30 shadow overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead class="bg-slate-900/90 text-white">
+          <tr>
+            <th class="text-left px-4 py-3 font-extrabold">ID</th>
+            <th class="text-right px-4 py-3 font-extrabold">Jumlah</th>
+            <th class="text-right px-4 py-3 font-extrabold">Tenor</th>
+            <th class="text-left px-4 py-3 font-extrabold">Keperluan</th>
+            <th class="text-right px-4 py-3 font-extrabold">Total Bayar</th>
+            <th class="text-right px-4 py-3 font-extrabold">Angsuran</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200">
+          {% for p in pinjaman_list %}
+          <tr class="hover:bg-white">
+            <td class="px-4 py-3 font-semibold text-slate-900">{{ p.id }}</td>
+            <td class="px-4 py-3 text-right text-slate-800">{{ p.jumlah }}</td>
+            <td class="px-4 py-3 text-right text-slate-800">{{ p.tenor }}</td>
+            <td class="px-4 py-3 text-slate-800 max-w-xs truncate" title="{{ p.keperluan }}">{{ p.keperluan }}</td>
+            <td class="px-4 py-3 text-right text-slate-800">{{ "%.2f"|format(p.total_bayar) }}</td>
+            <td class="px-4 py-3 text-right text-slate-800">{{ "%.2f"|format(p.angsuran) }}</td>
+          </tr>
+          {% else %}
+          <tr>
+            <td class="px-4 py-10 text-center text-slate-600 font-semibold" colspan="6">
+              Belum ada pinjaman.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

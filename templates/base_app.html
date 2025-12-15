@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Koperasi Simpan Pinjam{% endblock %}</title>
+
+  <!-- Tailwind CDN -->
+ <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+
+
+  {% block head %}{% endblock %}
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
+
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="hidden lg:flex lg:w-72 lg:flex-col bg-slate-900/85 backdrop-blur border-r border-white/10">
+      <div class="px-6 py-6 border-b border-white/10">
+        <div class="text-white font-extrabold tracking-widest text-xl">KOPERASI</div>
+        <div class="mt-4 rounded-2xl bg-white/5 border border-white/10 p-4">
+          <div class="text-white font-semibold">
+            {{ session.get('nama') or session.get('username') or 'Pengguna' }}
+          </div>
+          <div class="text-white/60 text-sm">
+            @{{ session.get('username') or '-' }}
+          </div>
+          <div class="mt-2 inline-flex items-center gap-2 text-xs text-white/70">
+            <span class="h-2 w-2 rounded-full {% if session.get('role')=='admin' %}bg-emerald-400{% else %}bg-sky-400{% endif %}"></span>
+            Role: <span class="font-semibold text-white/90">{{ session.get('role') or '-' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="px-4 py-4 flex-1 space-y-1">
+        <a href="{{ url_for('index') }}"
+           class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold
+                  {% if active=='dashboard' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
+          <span>🏠</span> Dashboard
+        </a>
+
+        {% if session.get('role') == 'user' %}
+        <a href="{{ url_for('pengajuan') }}"
+           class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold
+                  {% if active=='pengajuan' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
+          <span>📝</span> Pengajuan
+        </a>
+
+        <a href="{{ url_for('pinjaman_saya') }}"
+           class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold
+                  {% if active=='pinjaman_saya' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
+          <span>📌</span> Pinjaman Saya
+        </a>
+        {% endif %}
+
+        <a href="{{ url_for('daftar_pinjaman') }}"
+           class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold
+                  {% if active=='daftar' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
+          <span>📄</span> Daftar Pinjaman
+        </a>
+
+        {% if session.get('role') == 'admin' %}
+        <a href="{{ url_for('admin_users') }}"
+           class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold
+                  {% if active=='admin_users' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
+          <span>🛡️</span> Kelola User
+        </a>
+        {% endif %}
+      </nav>
+
+      <div class="p-4 border-t border-white/10">
+        <a href="{{ url_for('logout') }}"
+           class="flex items-center justify-center gap-2 w-full rounded-xl px-4 py-3 text-sm font-semibold bg-rose-500/90 hover:bg-rose-500 text-white">
+          🚪 Logout
+        </a>
+        <div class="mt-4 text-center text-xs text-white/50">
+          © 2025 Koperasi Simpan Pinjam
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1">
+      <!-- Topbar -->
+      <header class="bg-white/80 backdrop-blur border-b border-black/5">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 py-4 flex items-center justify-between">
+          <div class="font-extrabold tracking-widest text-slate-900">KOPERASI SIMPAN PINJAM</div>
+
+          <div class="hidden md:flex items-center gap-3">
+            <a href="{{ url_for('index') }}" class="text-sm font-semibold text-slate-700 hover:text-slate-900">Beranda</a>
+
+            {% if session.get('role') == 'user' %}
+              <a href="{{ url_for('pengajuan') }}" class="text-sm font-semibold text-slate-700 hover:text-slate-900">Pengajuan</a>
+            {% endif %}
+
+            <a href="{{ url_for('daftar_pinjaman') }}" class="text-sm font-semibold text-slate-700 hover:text-slate-900">Daftar Pinjaman</a>
+
+            {% if session.get('role') == 'admin' %}
+              <a href="{{ url_for('admin_users') }}" class="text-sm font-semibold text-slate-700 hover:text-slate-900">Kelola User</a>
+            {% endif %}
+          </div>
+
+          <a href="{{ url_for('logout') }}"
+             class="md:hidden inline-flex items-center rounded-xl bg-rose-500 px-3 py-2 text-sm font-semibold text-white">
+            Logout
+          </a>
+        </div>
+      </header>
+
+      <!-- Flash -->
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="space-y-2">
+              {% for category, msg in messages %}
+                <div class="rounded-2xl border border-white/20 bg-white/70 backdrop-blur px-4 py-3 text-slate-900 shadow-sm">
+                  <div class="text-sm font-semibold">
+                    {{ msg }}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+      </div>
+
+      <!-- Content -->
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 py-8">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+  </div>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

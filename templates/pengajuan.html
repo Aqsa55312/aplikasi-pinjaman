@@ -1,0 +1,42 @@
+{% extends "base_app.html" %}
+{% block title %}Pengajuan - Koperasi{% endblock %}
+
+{% block content %}
+  <div class="mb-6">
+    <h1 class="text-2xl font-extrabold text-white drop-shadow">Pengajuan Pinjaman</h1>
+    <p class="text-white/80 mt-1">Isi formulir untuk mengajukan pinjaman.</p>
+  </div>
+
+  <div class="rounded-3xl bg-white/80 backdrop-blur border border-white/30 shadow p-6 max-w-2xl">
+    <form method="POST" class="space-y-4">
+      <div>
+        <label class="text-sm font-bold text-slate-700">Jumlah Pinjaman</label>
+        <input name="jumlah" type="number" min="1" required
+               class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:ring-4 focus:ring-indigo-200"
+               placeholder="Contoh: 5000000">
+      </div>
+
+      <div>
+        <label class="text-sm font-bold text-slate-700">Tenor (bulan)</label>
+        <input name="tenor" type="number" min="1" required
+               class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:ring-4 focus:ring-indigo-200"
+               placeholder="Contoh: 12">
+      </div>
+
+      <div>
+        <label class="text-sm font-bold text-slate-700">Keperluan</label>
+        <textarea name="keperluan" required rows="3"
+                  class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:ring-4 focus:ring-indigo-200"
+                  placeholder="Contoh: modal usaha, biaya pendidikan, dll"></textarea>
+      </div>
+
+      <button class="w-full rounded-2xl bg-slate-900 text-white font-extrabold py-3 hover:bg-slate-800">
+        Simpan Pengajuan
+      </button>
+    </form>
+
+    <div class="mt-4 text-xs text-slate-600">
+      Bunga default dihitung otomatis di backend (12%/tahun).
+    </div>
+  </div>
+{% endblock %}

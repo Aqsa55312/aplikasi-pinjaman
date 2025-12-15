@@ -1,0 +1,68 @@
+{% extends "base_app.html" %}
+{% block title %}Daftar Pinjaman - Koperasi{% endblock %}
+
+{% block content %}
+  <div class="mb-6 flex items-end justify-between gap-3 flex-wrap">
+    <div>
+      <h1 class="text-2xl font-extrabold text-white drop-shadow">
+        {% if session.get('role')=='admin' %}Semua Pinjaman{% else %}Daftar Pinjaman{% endif %}
+      </h1>
+      <p class="text-white/80 mt-1">
+        {% if session.get('role')=='admin' %}Pantau seluruh pengajuan.{% else %}Riwayat pinjaman kamu.{% endif %}
+      </p>
+    </div>
+
+    {% if session.get('role')=='user' %}
+      <a href="{{ url_for('pengajuan') }}" class="rounded-2xl bg-white/80 backdrop-blur border border-white/30 px-4 py-2 text-sm font-bold text-slate-900 hover:bg-white">
+        + Ajukan
+      </a>
+    {% endif %}
+  </div>
+
+  <div class="rounded-3xl bg-white/80 backdrop-blur border border-white/30 shadow overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead class="bg-slate-900/90 text-white">
+          <tr>
+            <th class="text-left px-4 py-3 font-extrabold">ID</th>
+            <th class="text-left px-4 py-3 font-extrabold">Peminjam</th>
+            <th class="text-right px-4 py-3 font-extrabold">Jumlah</th>
+            <th class="text-right px-4 py-3 font-extrabold">Tenor</th>
+            <th class="text-left px-4 py-3 font-extrabold">Keperluan</th>
+            <th class="text-right px-4 py-3 font-extrabold">Bunga (%)</th>
+            <th class="text-right px-4 py-3 font-extrabold">Total Bayar</th>
+            <th class="text-right px-4 py-3 font-extrabold">Angsuran</th>
+            <th class="text-left px-4 py-3 font-extrabold">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200">
+          {% for p in pinjaman_list %}
+          <tr class="hover:bg-white">
+            <td class="px-4 py-3 font-semibold text-slate-900">{{ p.id }}</td>
+            <td class="px-4 py-3 text-slate-800">{{ p.peminjam }}</td>
+            <td class="px-4 py-3 text-right text-slate-800">{{ p.jumlah }}</td>
+            <td class="px-4 py-3 text-right text-slate-800">{{ p.tenor }}</td>
+            <td class="px-4 py-3 text-slate-800 max-w-xs truncate" title="{{ p.keperluan }}">{{ p.keperluan }}</td>
+            <td class="px-4 py-3 text-right text-slate-800">{{ p.bunga }}</td>
+            <td class="px-4 py-3 text-right text-slate-800">{{ "%.2f"|format(p.total_bayar) }}</td>
+            <td class="px-4 py-3 text-right text-slate-800">{{ "%.2f"|format(p.angsuran) }}</td>
+            <td class="px-4 py-3">
+              <a class="inline-flex items-center rounded-xl bg-rose-500 px-3 py-2 text-xs font-extrabold text-white hover:bg-rose-600"
+                 href="{{ url_for('hapus_pinjaman', pinjaman_id=p.id) }}"
+                 onclick="return confirm('Yakin hapus pinjaman ID {{ p.id }}?');">
+                Hapus
+              </a>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td class="px-4 py-10 text-center text-slate-600 font-semibold" colspan="9">
+              Belum ada data pinjaman.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,209 @@
+{% extends "base_auth.html" %}
+
+{% block title %}Login - Koperasi{% endblock %}
+
+{% block content %}
+<!-- WRAPPER -->
+<section class="relative min-h-screen overflow-hidden" id="parallax-root">
+  <!-- LAYERS -->
+  <div class="absolute inset-0 z-0">
+    <!-- Layer paling belakang (HD photo) -->
+    <div
+      class="absolute inset-0 will-change-transform"
+      data-depth="0.10"
+      style="
+        background-image: url('{{ url_for('static', filename='img/hero-koperasi.jpg') }}');
+        background-size: cover;
+        background-position: center;
+        transform: scale(1.08);
+      "
+    ></div>
+
+    <!-- Layer kedua (HD photo) -->
+    <div
+      class="absolute inset-0 will-change-transform opacity-70 mix-blend-soft-light"
+      data-depth="0.18"
+      style="
+        background-image: url('{{ url_for('static', filename='img/hero-koperasi-2.jpg') }}');
+        background-size: cover;
+        background-position: center;
+        transform: scale(1.10);
+      "
+    ></div>
+
+    <!-- Vignette + gelap biar teks kebaca -->
+    <div class="absolute inset-0 bg-gradient-to-br from-slate-950/70 via-slate-950/60 to-purple-950/55"></div>
+    <div class="absolute inset-0 [background:radial-gradient(1200px_600px_at_30%_20%,rgba(255,255,255,0.10),transparent_60%)]"></div>
+    <div class="absolute inset-0 [background:radial-gradient(900px_500px_at_70%_70%,rgba(168,85,247,0.14),transparent_60%)]"></div>
+
+    <!-- Noise halus (pure CSS, bukan PNG) -->
+    <div class="absolute inset-0 opacity-[0.10] mix-blend-overlay pointer-events-none noise-layer"></div>
+  </div>
+
+  <!-- CONTENT GRID -->
+  <div class="relative z-10 min-h-screen">
+    <div class="mx-auto max-w-6xl px-6 py-14">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+
+        <!-- LEFT: HERO COPY -->
+        <div class="space-y-6">
+          <div class="inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
+            <div class="h-10 w-10 rounded-xl bg-white/10 grid place-items-center border border-white/10">
+              <span class="text-lg">🏦</span>
+            </div>
+            <div>
+              <div class="text-xs tracking-widest text-white/70">SISTEM KOPERASI</div>
+              <div class="text-sm font-semibold text-white/90">Simpan • Pinjam • Aman</div>
+            </div>
+          </div>
+
+          <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight text-white drop-shadow">
+            Koperasi Simpan Pinjam<br />
+            <span class="text-white/80">lebih cepat, rapi, dan aman.</span>
+          </h1>
+
+          <p class="text-white/70 max-w-xl">
+            Ajukan pinjaman, pantau status, dan lihat riwayat pinjaman dengan tampilan modern.
+    
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl">
+            <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-4">
+              <div class="font-semibold text-white">Cepat</div>
+              <div class="text-sm text-white/70 mt-1">Proses input sederhana.</div>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-4">
+              <div class="font-semibold text-white">Aman</div>
+              <div class="text-sm text-white/70 mt-1">Akses Mudah</div>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-4">
+              <div class="font-semibold text-white">Rapi</div>
+              <div class="text-sm text-white/70 mt-1"> mudah dibaca.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: LOGIN CARD -->
+        <div class="lg:justify-self-end w-full">
+          <div class="w-full max-w-md rounded-3xl border border-white/10 bg-slate-900/65 backdrop-blur-xl shadow-xl">
+            <div class="p-6 border-b border-white/10">
+              <h2 class="text-2xl font-bold text-white">Login</h2>
+              <p class="text-sm text-white/70 mt-1">Masuk untuk melanjutkan</p>
+            </div>
+
+            <div class="p-6">
+              <form method="POST" class="space-y-4">
+                <div class="space-y-1">
+                  <label class="text-sm text-white/80">Username</label>
+                  <input
+                    name="username"
+                    autocomplete="username"
+                    class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none
+                           placeholder:text-white/40 focus:ring-4 focus:ring-indigo-200/30"
+                    placeholder="Masukkan username"
+                    required
+                  />
+                </div>
+
+                <div class="space-y-1">
+                  <label class="text-sm text-white/80">Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    autocomplete="current-password"
+                    class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none
+                           placeholder:text-white/40 focus:ring-4 focus:ring-indigo-200/30"
+                    placeholder="Masukkan password"
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  class="w-full rounded-xl bg-white text-slate-900 font-semibold py-3 transition hover:bg-white/90"
+                >
+                  Masuk
+                </button>
+
+                <p class="text-sm text-white/70 text-center">
+                  Belum punya akun?
+                  <a href="{{ url_for('register') }}" class="font-semibold text-white hover:underline">Daftar</a>
+                </p>
+              </form>
+            </div>
+          </div>
+
+          <div class="mt-6 text-center text-xs text-white/50">
+            © {{ current_year|default('2025') }} Koperasi Simpan Pinjam
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(() => {
+  const root = document.getElementById("parallax-root");
+  if (!root) return;
+
+  const layers = Array.from(root.querySelectorAll("[data-depth]"));
+  if (!layers.length) return;
+
+  // Parallax lembut: requestAnimationFrame + lerp
+  let targetX = 0, targetY = 0;
+  let curX = 0, curY = 0;
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+  function onMove(e) {
+    const w = window.innerWidth || 1;
+    const h = window.innerHeight || 1;
+
+    // posisi mouse relatif center (-1..1)
+    const x = (e.clientX / w) * 2 - 1;
+    const y = (e.clientY / h) * 2 - 1;
+
+    // batasi supaya ga lebay
+    targetX = clamp(x, -0.9, 0.9);
+    targetY = clamp(y, -0.9, 0.9);
+  }
+
+  function animate() {
+    // smoothing (lerp)
+    curX += (targetX - curX) * 0.06;
+    curY += (targetY - curY) * 0.06;
+
+    // apply ke tiap layer
+    for (const el of layers) {
+      const depth = parseFloat(el.getAttribute("data-depth")) || 0.1;
+      const moveX = curX * 30 * depth; // px
+      const moveY = curY * 22 * depth; // px
+      el.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(1.08)`;
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  // desktop-only feel (mouse). Kalau ingin tetap aktif di mobile, bisa tambahin deviceorientation.
+  window.addEventListener("mousemove", onMove, { passive: true });
+  requestAnimationFrame(animate);
+})();
+</script>
+
+<style>
+  /* Noise procedural (tanpa PNG) */
+  .noise-layer {
+    background-image:
+      radial-gradient(circle at 10% 10%, rgba(255,255,255,0.18) 0 1px, transparent 2px),
+      radial-gradient(circle at 70% 30%, rgba(255,255,255,0.12) 0 1px, transparent 2px),
+      radial-gradient(circle at 40% 80%, rgba(255,255,255,0.10) 0 1px, transparent 2px);
+    background-size: 120px 120px, 160px 160px, 200px 200px;
+    background-position: 0 0, 40px 10px, 20px 60px;
+    filter: contrast(120%) brightness(110%);
+  }
+</style>
+{% endblock %}

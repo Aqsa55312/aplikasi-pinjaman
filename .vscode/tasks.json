@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Koperasi Pinjaman App",
+			"type": "shell",
+			"command": "\"C:/laragon/www/aplikasi pinjaman/.venv/Scripts/python.exe\" app.py",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}

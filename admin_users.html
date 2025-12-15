@@ -1,0 +1,70 @@
+{% extends "base_app.html" %}
+{% block title %}Kelola User - Admin{% endblock %}
+
+{% block content %}
+  <div class="mb-6">
+    <h1 class="text-2xl font-extrabold text-white drop-shadow">Kelola User</h1>
+    <p class="text-white/80 mt-1">Ubah role atau hapus user.</p>
+  </div>
+
+  <div class="rounded-3xl bg-white/80 backdrop-blur border border-white/30 shadow overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead class="bg-slate-900/90 text-white">
+          <tr>
+            <th class="text-left px-4 py-3 font-extrabold">ID</th>
+            <th class="text-left px-4 py-3 font-extrabold">Nama</th>
+            <th class="text-left px-4 py-3 font-extrabold">Email</th>
+            <th class="text-left px-4 py-3 font-extrabold">Username</th>
+            <th class="text-left px-4 py-3 font-extrabold">Role</th>
+            <th class="text-left px-4 py-3 font-extrabold">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200">
+          {% for u in users %}
+          <tr class="hover:bg-white">
+            <td class="px-4 py-3 font-semibold text-slate-900">{{ u.id }}</td>
+            <td class="px-4 py-3 text-slate-800">{{ u.nama }}</td>
+            <td class="px-4 py-3 text-slate-800">{{ u.email }}</td>
+            <td class="px-4 py-3 text-slate-800">@{{ u.username }}</td>
+            <td class="px-4 py-3">
+              {% if u.role == 'admin' %}
+                <span class="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-extrabold text-emerald-800">admin</span>
+              {% else %}
+                <span class="inline-flex items-center rounded-full bg-sky-100 px-3 py-1 text-xs font-extrabold text-sky-800">user</span>
+              {% endif %}
+            </td>
+            <td class="px-4 py-3">
+              <div class="flex flex-wrap gap-2">
+                {% if u.role != 'admin' %}
+                  <a class="rounded-xl bg-slate-900 px-3 py-2 text-xs font-extrabold text-white hover:bg-slate-800"
+                     href="{{ url_for('admin_set_role', user_id=u.id, role='admin') }}">
+                    Jadikan Admin
+                  </a>
+                {% else %}
+                  <a class="rounded-xl bg-slate-900 px-3 py-2 text-xs font-extrabold text-white hover:bg-slate-800"
+                     href="{{ url_for('admin_set_role', user_id=u.id, role='user') }}">
+                    Jadikan User
+                  </a>
+                {% endif %}
+
+                <a class="rounded-xl bg-rose-500 px-3 py-2 text-xs font-extrabold text-white hover:bg-rose-600"
+                   href="{{ url_for('admin_delete_user', user_id=u.id) }}"
+                   onclick="return confirm('Yakin hapus user {{ u.username }}?');">
+                  Hapus
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td class="px-4 py-10 text-center text-slate-600 font-semibold" colspan="6">
+              Belum ada user.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

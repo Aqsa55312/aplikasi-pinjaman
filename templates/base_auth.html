@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Koperasi - Auth{% endblock %}</title>
+
+  <!-- Tailwind build -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+
+  {% block head %}{% endblock %}
+</head>
+
+<body class="min-h-screen bg-slate-950 text-slate-100">
+  {# Flash messages (opsional, aman kalau belum ada) #}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="fixed top-4 left-1/2 -translate-x-1/2 z-[9999] w-[min(720px,calc(100%-2rem))] space-y-2">
+        {% for category, message in messages %}
+          <div class="rounded-xl border border-white/10 bg-slate-900/85 backdrop-blur px-4 py-3 text-sm shadow">
+            <div class="flex items-start justify-between gap-3">
+              <div class="text-white/90">{{ message }}</div>
+              <button type="button" class="text-white/60 hover:text-white"
+                onclick="this.closest('div.rounded-xl').remove()"
+                aria-label="Close">
+                ✕
+              </button>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

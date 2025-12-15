@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Koperasi Simpan Pinjam{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body { background: linear-gradient(120deg, #6a82fb 0%, #fc5c7d 100%); min-height: 100vh; margin: 0; }
+        .sidebar { width: 220px; background: #232946; color: #fff; position: fixed; top: 0; left: 0; height: 100vh; display: flex; flex-direction: column; box-shadow: 2px 0 16px rgba(0,0,0,0.08); }
+        .sidebar-header { font-size: 1.6rem; font-weight: bold; padding: 32px 0 12px 0; text-align: center; letter-spacing: 1px; border-bottom: 1px solid #2d3250; }
+        .sidebar-user { text-align: center; margin: 18px 0 24px 0; font-size: 1rem; color: #eebbc3; }
+        .sidebar-menu { flex: 1; display: flex; flex-direction: column; gap: 6px; padding: 0 0 0 0; }
+        .sidebar-menu a { display: flex; align-items: center; gap: 10px; padding: 12px 28px; color: #fff; text-decoration: none; font-size: 1.08rem; border-radius: 8px; transition: background 0.18s; }
+        .sidebar-menu a.active, .sidebar-menu a:hover { background: #393e6d; color: #eebbc3; }
+        .sidebar-footer { padding: 18px 0; text-align: center; font-size: 0.95rem; color: #b8b8b8; }
+        .main-content { margin-left: 220px; padding: 0; min-height: 100vh; }
+        .header { background: #fff; padding: 18px 38px; border-bottom: 1px solid #eee; font-size: 1.25rem; font-weight: 500; color: #232946; letter-spacing: 1px; }
+        @media (max-width: 900px) { .sidebar { width: 100px; } .main-content { margin-left: 100px; } .sidebar-menu a { font-size: 0.95rem; padding: 10px 10px; } }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">KOPERASI</div>
+        <div class="sidebar-user">
+            {% if session['user'] %}
+                <div style="font-weight:600;">{{ users[session['user']]['fullname'] if session['user'] in users else session['user'] }}</div>
+                <div style="font-size:0.95em;">{{ session['user'] }}</div>
+            {% endif %}
+        </div>
+        <div class="sidebar-menu">
+            <a href="/" class="{% if request.path == '/' %}active{% endif %}"><span>🏠</span> Dashboard</a>
+            <a href="/logout"><span>🚪</span> Logout</a>
+        </div>
+        <div class="sidebar-footer">&copy; {{ now().year }} Koperasi Simpan Pinjam</div>
+    </div>
+    <div class="main-content">
+        <div class="header">KOPERASI SIMPAN PINJAM</div>
+        <div style="padding:38px 0 0 0;display:flex;justify-content:center;">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

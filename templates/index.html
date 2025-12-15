@@ -1,0 +1,43 @@
+{% extends "base_app.html" %}
+{% block title %}Dashboard - Koperasi{% endblock %}
+
+{% block content %}
+  <div class="mb-6">
+    <h1 class="text-2xl font-extrabold text-white drop-shadow">Dashboard</h1>
+    <p class="text-white/80 mt-1">Selamat datang, <span class="font-semibold">{{ session.get('nama') or session.get('username') }}</span>.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {% if session.get('role') == 'user' %}
+      <a href="{{ url_for('pengajuan') }}" class="group rounded-3xl bg-white/80 border border-white/30 backdrop-blur p-6 shadow hover:shadow-lg transition">
+        <div class="text-3xl">📝</div>
+        <div class="mt-3 text-slate-900 font-extrabold text-lg">Ajukan Pinjaman</div>
+        <p class="text-slate-700 mt-1 text-sm">Buat pengajuan pinjaman baru dengan cepat dan mudah.</p>
+      </a>
+
+      <a href="{{ url_for('pinjaman_saya') }}" class="group rounded-3xl bg-white/80 border border-white/30 backdrop-blur p-6 shadow hover:shadow-lg transition">
+        <div class="text-3xl">📌</div>
+        <div class="mt-3 text-slate-900 font-extrabold text-lg">Pinjaman Saya</div>
+        <p class="text-slate-700 mt-1 text-sm">Lihat daftar pinjaman yang kamu ajukan.</p>
+      </a>
+    {% endif %}
+
+    <a href="{{ url_for('daftar_pinjaman') }}" class="group rounded-3xl bg-white/80 border border-white/30 backdrop-blur p-6 shadow hover:shadow-lg transition">
+      <div class="text-3xl">📄</div>
+      <div class="mt-3 text-slate-900 font-extrabold text-lg">
+        {% if session.get('role') == 'admin' %}Semua Pinjaman{% else %}Daftar Pinjaman{% endif %}
+      </div>
+      <p class="text-slate-700 mt-1 text-sm">
+        {% if session.get('role') == 'admin' %}Pantau seluruh pengajuan pinjaman.{% else %}Lihat riwayat pinjaman kamu.{% endif %}
+      </p>
+    </a>
+
+    {% if session.get('role') == 'admin' %}
+      <a href="{{ url_for('admin_users') }}" class="group rounded-3xl bg-white/80 border border-white/30 backdrop-blur p-6 shadow hover:shadow-lg transition">
+        <div class="text-3xl">🛡️</div>
+        <div class="mt-3 text-slate-900 font-extrabold text-lg">Kelola User</div>
+        <p class="text-slate-700 mt-1 text-sm">Ubah role dan kelola akun pengguna.</p>
+      </a>
+    {% endif %}
+  </div>
+{% endblock %}
