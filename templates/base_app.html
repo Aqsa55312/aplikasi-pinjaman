@@ -6,127 +6,236 @@
   <title>{% block title %}Koperasi Simpan Pinjam{% endblock %}</title>
 
   <!-- Tailwind CDN -->
- <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  <script src="https://cdn.tailwindcss.com"></script>
 
+  <style>
+    /* Animated Background */
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    body {
+      background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+    }
+
+    /* Glassmorphism */
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .glass-dark {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Hover Effects */
+    .nav-item {
+      transition: all 0.3s ease;
+    }
+
+    .nav-item:hover {
+      transform: translateX(5px);
+    }
+
+    /* Floating Animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* Pulse Animation */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
 
   {% block head %}{% endblock %}
 </head>
-<body class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
+<body class="min-h-screen">
 
   <div class="flex min-h-screen">
-    <!-- Sidebar -->
-    <aside class="hidden lg:flex lg:w-72 lg:flex-col bg-slate-900/85 backdrop-blur border-r border-white/10">
+    <!-- Sidebar - Desktop Only -->
+    <aside class="hidden lg:flex lg:w-80 flex-col glass-dark shadow-2xl fixed left-0 top-0 h-screen z-50">
+      <!-- Logo & User Profile -->
       <div class="px-6 py-6 border-b border-white/10">
-        <div class="text-white font-extrabold tracking-widest text-xl">KOPERASI</div>
-        <div class="mt-4 rounded-2xl bg-white/5 border border-white/10 p-4">
-          <div class="text-white font-semibold">
-            {{ session.get('nama') or session.get('username') or 'Pengguna' }}
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center shadow-lg float">
+            <span class="text-2xl">🏦</span>
           </div>
-          <div class="text-white/60 text-sm">
-            @{{ session.get('username') or '-' }}
+          <div>
+            <div class="text-white font-extrabold tracking-wider text-xl">KOPERASI</div>
+            <div class="text-cyan-400 text-xs font-semibold">Simpan Pinjam</div>
           </div>
-          <div class="mt-2 inline-flex items-center gap-2 text-xs text-white/70">
-            <span class="h-2 w-2 rounded-full {% if session.get('role')=='admin' %}bg-emerald-400{% else %}bg-sky-400{% endif %}"></span>
-            Role: <span class="font-semibold text-white/90">{{ session.get('role') or '-' }}</span>
+        </div>
+
+        <!-- User Card -->
+        <div class="rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 p-4">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+              {{ (session.get('nama') or session.get('username') or 'U')[0].upper() }}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="text-white font-bold text-sm truncate">
+                {{ session.get('nama') or session.get('username') or 'Pengguna' }}
+              </div>
+              <div class="text-white/60 text-xs truncate">
+                @{{ session.get('username') or '-' }}
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2">
+            <span class="h-2 w-2 rounded-full {% if session.get('role')=='admin' %}bg-emerald-400 pulse{% else %}bg-cyan-400 pulse{% endif %}"></span>
+            <span class="text-xs text-white/70 font-medium">Role:</span>
+            <span class="text-xs font-bold text-white capitalize">{{ session.get('role') or '-' }}</span>
           </div>
         </div>
       </div>
 
-      <nav class="px-4 py-4 flex-1 space-y-1">
+      <!-- Navigation -->
+      <nav class="px-4 py-6 flex-1 space-y-2 overflow-y-auto">
         <a href="{{ url_for('index') }}"
-           class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold
-                  {% if active=='dashboard' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
-          <span>🏠</span> Dashboard
+           class="nav-item flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-semibold {% if request.endpoint == 'index' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-lg shadow-md">
+            🏠
+          </div>
+          <span class="flex-1">Dashboard</span>
         </a>
 
         {% if session.get('role') == 'user' %}
         <a href="{{ url_for('pengajuan') }}"
-           class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold
-                  {% if active=='pengajuan' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
-          <span>📝</span> Pengajuan
+           class="nav-item flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-semibold {% if request.endpoint == 'pengajuan' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-lg shadow-md">
+            📝
+          </div>
+          <span class="flex-1">Pengajuan</span>
         </a>
 
         <a href="{{ url_for('pinjaman_saya') }}"
-           class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold
-                  {% if active=='pinjaman_saya' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
-          <span>📌</span> Pinjaman Saya
+           class="nav-item flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-semibold {% if request.endpoint == 'pinjaman_saya' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-lg shadow-md">
+            📌
+          </div>
+          <span class="flex-1">Pinjaman Saya</span>
         </a>
         {% endif %}
 
         <a href="{{ url_for('daftar_pinjaman') }}"
-           class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold
-                  {% if active=='daftar' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
-          <span>📄</span> Daftar Pinjaman
+           class="nav-item flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-semibold {% if request.endpoint == 'daftar_pinjaman' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-lg shadow-md">
+            📄
+          </div>
+          <span class="flex-1">Daftar Pinjaman</span>
         </a>
 
         {% if session.get('role') == 'admin' %}
         <a href="{{ url_for('admin_users') }}"
-           class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold
-                  {% if active=='admin_users' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
-          <span>🛡️</span> Kelola User
+           class="nav-item flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-semibold {% if request.endpoint == 'admin_users' %}bg-white/10 text-white{% else %}text-white/80 hover:bg-white/10 hover:text-white{% endif %}">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center text-lg shadow-md">
+            🛡️
+          </div>
+          <span class="flex-1">Kelola User</span>
         </a>
         {% endif %}
       </nav>
 
+      <!-- Logout Button -->
       <div class="p-4 border-t border-white/10">
         <a href="{{ url_for('logout') }}"
-           class="flex items-center justify-center gap-2 w-full rounded-xl px-4 py-3 text-sm font-semibold bg-rose-500/90 hover:bg-rose-500 text-white">
-          🚪 Logout
+           class="flex items-center justify-center gap-2 w-full rounded-xl px-4 py-3.5 text-sm font-bold bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white shadow-lg transition-all">
+          <span class="text-lg">🚪</span>
+          <span>Logout</span>
         </a>
-        <div class="mt-4 text-center text-xs text-white/50">
+        <div class="mt-4 text-center text-xs text-white/40">
           © 2025 Koperasi Simpan Pinjam
         </div>
       </div>
     </aside>
 
-    <!-- Main -->
-    <main class="flex-1">
-      <!-- Topbar -->
-      <header class="bg-white/80 backdrop-blur border-b border-black/5">
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 py-4 flex items-center justify-between">
-          <div class="font-extrabold tracking-widest text-slate-900">KOPERASI SIMPAN PINJAM</div>
-
-          <div class="hidden md:flex items-center gap-3">
-            <a href="{{ url_for('index') }}" class="text-sm font-semibold text-slate-700 hover:text-slate-900">Beranda</a>
-
-            {% if session.get('role') == 'user' %}
-              <a href="{{ url_for('pengajuan') }}" class="text-sm font-semibold text-slate-700 hover:text-slate-900">Pengajuan</a>
-            {% endif %}
-
-            <a href="{{ url_for('daftar_pinjaman') }}" class="text-sm font-semibold text-slate-700 hover:text-slate-900">Daftar Pinjaman</a>
-
-            {% if session.get('role') == 'admin' %}
-              <a href="{{ url_for('admin_users') }}" class="text-sm font-semibold text-slate-700 hover:text-slate-900">Kelola User</a>
-            {% endif %}
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-80">
+      <!-- Mobile Header -->
+      <header class="lg:hidden glass border-b border-white/20 shadow-lg sticky top-0 z-40">
+        <div class="px-4 py-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center shadow-md">
+                <span class="text-xl">🏦</span>
+              </div>
+              <div class="font-extrabold tracking-wider text-white text-lg">KOPERASI</div>
+            </div>
+            <a href="{{ url_for('logout') }}"
+               class="inline-flex items-center rounded-xl bg-gradient-to-r from-red-500 to-rose-600 px-4 py-2 text-sm font-bold text-white shadow-lg">
+              Logout
+            </a>
           </div>
-
-          <a href="{{ url_for('logout') }}"
-             class="md:hidden inline-flex items-center rounded-xl bg-rose-500 px-3 py-2 text-sm font-semibold text-white">
-            Logout
-          </a>
         </div>
       </header>
 
-      <!-- Flash -->
-      <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-5">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            <div class="space-y-2">
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="px-4 sm:px-6 lg:px-8 pt-4">
+            <div class="space-y-3 max-w-7xl mx-auto">
               {% for category, msg in messages %}
-                <div class="rounded-2xl border border-white/20 bg-white/70 backdrop-blur px-4 py-3 text-slate-900 shadow-sm">
-                  <div class="text-sm font-semibold">
-                    {{ msg }}
+                <div class="glass rounded-2xl border border-white/30 px-5 py-4 text-white shadow-xl">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                      <span class="text-xl">✓</span>
+                    </div>
+                    <div class="flex-1">
+                      <div class="text-sm font-bold">{{ msg }}</div>
+                    </div>
                   </div>
                 </div>
               {% endfor %}
             </div>
-          {% endif %}
-        {% endwith %}
-      </div>
+          </div>
+        {% endif %}
+      {% endwith %}
 
-      <!-- Content -->
-      <div class="mx-auto max-w-6xl px-4 sm:px-6 py-8">
-        {% block content %}{% endblock %}
+      <!-- Page Content -->
+      <div class="px-4 sm:px-6 lg:px-8 py-6">
+        <div class="max-w-7xl mx-auto">
+          {% block content %}{% endblock %}
+        </div>
       </div>
     </main>
   </div>

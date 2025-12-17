@@ -1,42 +1,308 @@
 {% extends "base_app.html" %}
-{% block title %}Pengajuan - Koperasi{% endblock %}
+{% block title %}Pengajuan Pinjaman - Koperasi{% endblock %}
 
 {% block content %}
-  <div class="mb-6">
-    <h1 class="text-2xl font-extrabold text-white drop-shadow">Pengajuan Pinjaman</h1>
-    <p class="text-white/80 mt-1">Isi formulir untuk mengajukan pinjaman.</p>
-  </div>
+  <style>
+    /* Custom range slider */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      border-radius: 10px;
+      outline: none;
+      opacity: 0.9;
+      transition: opacity 0.2s;
+    }
+    
+    input[type="range"]:hover {
+      opacity: 1;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+    
+    input[type="range"]::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s;
+    }
 
-  <div class="rounded-3xl bg-white/80 backdrop-blur border border-white/30 shadow p-6 max-w-2xl">
-    <form method="POST" class="space-y-4">
-      <div>
-        <label class="text-sm font-bold text-slate-700">Jumlah Pinjaman</label>
-        <input name="jumlah" type="number" min="1" required
-               class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:ring-4 focus:ring-indigo-200"
-               placeholder="Contoh: 5000000">
+    /* Input Focus Animation */
+    .input-modern {
+      transition: all 0.3s ease;
+    }
+    
+    .input-modern:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    /* Remove number input spinners */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+  </style>
+
+  <!-- Header Section -->
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-3">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg">
+        <span class="text-2xl">💰</span>
       </div>
-
       <div>
-        <label class="text-sm font-bold text-slate-700">Tenor (bulan)</label>
-        <input name="tenor" type="number" min="1" required
-               class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:ring-4 focus:ring-indigo-200"
-               placeholder="Contoh: 12">
+        <h1 class="text-3xl font-extrabold text-white drop-shadow-lg">Pengajuan Pinjaman</h1>
+        <p class="text-white/90 text-sm mt-1">Proses cepat, transparan, dan aman</p>
       </div>
-
-      <div>
-        <label class="text-sm font-bold text-slate-700">Keperluan</label>
-        <textarea name="keperluan" required rows="3"
-                  class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:ring-4 focus:ring-indigo-200"
-                  placeholder="Contoh: modal usaha, biaya pendidikan, dll"></textarea>
-      </div>
-
-      <button class="w-full rounded-2xl bg-slate-900 text-white font-extrabold py-3 hover:bg-slate-800">
-        Simpan Pengajuan
-      </button>
-    </form>
-
-    <div class="mt-4 text-xs text-slate-600">
-      Bunga default dihitung otomatis di backend (12%/tahun).
     </div>
   </div>
+
+  <!-- Main Content Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+    <!-- Left Column: Form Pengajuan -->
+    <div class="lg:col-span-1">
+      <div class="glass rounded-3xl shadow-2xl p-8 border border-white/30">
+        <!-- Header Form -->
+        <div class="flex items-center gap-4 mb-8 pb-6 border-b border-white/30">
+          <div class="relative">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-black text-2xl shadow-lg">
+              1
+            </div>
+            <div class="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></div>
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-white">Form Pengajuan</h2>
+            <p class="text-white/70 text-sm">Lengkapi data di bawah ini</p>
+          </div>
+        </div>
+        
+        <form method="POST" id="loanForm" class="space-y-7">
+          <!-- Jumlah Pinjaman -->
+          <div>
+            <label for="jumlah" class="flex items-center gap-2 text-sm font-bold text-white mb-3">
+              <span class="text-xl">💵</span>
+              <span>Jumlah Pinjaman</span>
+            </label>
+            <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 font-semibold text-lg">Rp</span>
+              <input name="jumlah" id="jumlah" type="number" min="100000" max="100000000" step="100000" required
+                     class="input-modern w-full rounded-2xl border-2 border-white/30 bg-white/90 backdrop-blur pl-12 pr-4 py-4 text-lg font-semibold text-slate-800 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-200/50 transition"
+                     placeholder="5.000.000"
+                     oninput="calculateLoan()">
+            </div>
+            <div class="flex items-center gap-2 mt-2 text-xs text-white/80">
+              <span class="px-2 py-1 bg-white/20 rounded-lg">Min: Rp 100.000</span>
+              <span class="px-2 py-1 bg-white/20 rounded-lg">Max: Rp 100.000.000</span>
+            </div>
+          </div>
+
+          <!-- Tenor -->
+          <div>
+            <label for="tenor" class="flex items-center gap-2 text-sm font-bold text-white mb-3">
+              <span class="text-xl">📆</span>
+              <span>Tenor Pinjaman</span>
+            </label>
+            <div class="bg-white/20 rounded-2xl p-5 backdrop-blur">
+              <div class="flex items-center gap-4 mb-4">
+                <input name="tenor" id="tenor" type="range" min="1" max="60" value="12" required
+                       class="flex-1"
+                       oninput="updateTenorDisplay(); calculateLoan()">
+                <div id="tenorDisplay" class="min-w-[80px] text-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-black text-xl px-4 py-3 rounded-xl shadow-lg">
+                  12
+                </div>
+              </div>
+              <div class="flex justify-between text-xs text-white/70 font-medium px-1">
+                <span>1 bulan</span>
+                <span>60 bulan</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Keperluan -->
+          <div>
+            <label for="keperluan" class="flex items-center gap-2 text-sm font-bold text-white mb-3">
+              <span class="text-xl">📋</span>
+              <span>Keperluan Pinjaman</span>
+            </label>
+            <textarea name="keperluan" id="keperluan" required rows="4"
+                      class="input-modern w-full rounded-2xl border-2 border-white/30 bg-white/90 backdrop-blur px-4 py-4 text-base text-slate-800 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-200/50 transition resize-none"
+                      placeholder="Contoh: Modal usaha warung makan, renovasi dapur, atau kebutuhan pendidikan anak"></textarea>
+            <p class="text-xs text-white/80 mt-2 flex items-center gap-1">
+              <span>ℹ️</span>
+              <span>Minimal 10 karakter, jelaskan kebutuhan Anda</span>
+            </p>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="w-full rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold py-5 hover:from-green-600 hover:to-emerald-700 transition-all shadow-xl hover:shadow-2xl flex items-center justify-center text-lg mt-8">
+            <span class="flex items-center gap-2">
+              <span class="text-2xl">✓</span>
+              <span>Ajukan Pinjaman Sekarang</span>
+            </span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right Column: Kalkulator -->
+    <div class="lg:col-span-1">
+      <div class="glass rounded-3xl shadow-2xl p-8 sticky top-4 border border-white/30">
+        <!-- Header Kalkulator -->
+        <div class="flex items-center gap-3 mb-8 pb-6 border-b border-white/30">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center shadow-lg">
+            <span class="text-2xl">🧮</span>
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-white">Kalkulator</h2>
+            <p class="text-white/70 text-sm">Simulasi pembayaran</p>
+          </div>
+        </div>
+
+        <div class="space-y-5">
+          <!-- Jumlah Pinjaman -->
+          <div class="bg-gradient-to-br from-white/20 to-white/10 rounded-2xl p-5 backdrop-blur border border-white/30">
+            <p class="text-sm text-white/80 font-semibold mb-2">Jumlah Pinjaman</p>
+            <p id="calcJumlah" class="text-3xl font-black text-white">Rp 0</p>
+          </div>
+
+          <!-- Tenor -->
+          <div class="bg-gradient-to-br from-white/20 to-white/10 rounded-2xl p-5 backdrop-blur border border-white/30">
+            <p class="text-sm text-white/80 font-semibold mb-2">Jangka Waktu</p>
+            <p id="calcTenor" class="text-3xl font-black text-white">0 bulan</p>
+          </div>
+
+          <!-- Bunga -->
+          <div class="bg-gradient-to-br from-white/20 to-white/10 rounded-2xl p-5 backdrop-blur border border-white/30">
+            <p class="text-sm text-white/80 font-semibold mb-2">Total Bunga</p>
+            <p id="calcBunga" class="text-3xl font-black text-white">Rp 0</p>
+            <p class="text-xs text-white/60 mt-1">Bunga 1% per bulan (12% per tahun)</p>
+          </div>
+
+          <!-- Divider -->
+          <div class="relative my-6">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t-2 border-white/30"></div>
+            </div>
+            <div class="relative flex justify-center">
+              <span class="bg-gradient-to-r from-indigo-500 to-purple-600 px-4 py-1 rounded-full text-white text-xs font-bold">TOTAL PEMBAYARAN</span>
+            </div>
+          </div>
+
+          <!-- Total Bayar -->
+          <div class="bg-gradient-to-br from-indigo-500/40 to-purple-600/40 rounded-2xl p-6 backdrop-blur border-2 border-white/40 shadow-xl">
+            <p class="text-sm text-white font-bold mb-2">Total Yang Harus Dibayar</p>
+            <p id="calcTotal" class="text-4xl font-black text-white drop-shadow-lg">Rp 0</p>
+          </div>
+
+          <!-- Angsuran -->
+          <div class="bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl p-6 shadow-2xl transform hover:scale-105 transition">
+            <p class="text-sm text-slate-900 font-bold mb-2">💳 Angsuran Per Bulan</p>
+            <p id="calcAngsuran" class="text-4xl font-black text-slate-900 drop-shadow">Rp 0</p>
+          </div>
+        </div>
+
+        <!-- Info Box -->
+        <div class="mt-6 p-4 bg-blue-500/20 rounded-xl border border-blue-400/30 backdrop-blur">
+          <div class="flex gap-3">
+            <span class="text-2xl flex-shrink-0">💡</span>
+            <div class="text-xs text-white/90 leading-relaxed">
+              <p class="font-semibold mb-1">Informasi Penting:</p>
+              <p>• Perhitungan bersifat estimasi</p>
+              <p>• Bunga dihitung flat 1% per bulan</p>
+              <p>• Proses persetujuan 1-3 hari kerja</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function formatRupiah(angka) {
+      return 'Rp ' + new Intl.NumberFormat('id-ID').format(Math.round(angka));
+    }
+
+    function updateTenorDisplay() {
+      const tenor = document.getElementById('tenor').value;
+      document.getElementById('tenorDisplay').textContent = tenor;
+    }
+
+    function calculateLoan() {
+      const jumlah = parseFloat(document.getElementById('jumlah').value) || 0;
+      const tenor = parseFloat(document.getElementById('tenor').value) || 0;
+
+      const bungaPerBulan = 1.0;
+      const totalBunga = jumlah * (bungaPerBulan / 100.0) * tenor;
+      const totalBayar = jumlah + totalBunga;
+      const angsuran = tenor > 0 ? totalBayar / tenor : 0;
+
+      document.getElementById('calcJumlah').textContent = formatRupiah(jumlah);
+      document.getElementById('calcTenor').textContent = tenor + ' bulan';
+      document.getElementById('calcBunga').textContent = formatRupiah(totalBunga);
+      document.getElementById('calcTotal').textContent = formatRupiah(totalBayar);
+      document.getElementById('calcAngsuran').textContent = formatRupiah(angsuran);
+    }
+
+    document.getElementById('loanForm').addEventListener('submit', function(e) {
+      const jumlah = parseFloat(document.getElementById('jumlah').value);
+      const tenor = parseFloat(document.getElementById('tenor').value);
+      const keperluan = document.getElementById('keperluan').value.trim();
+
+      if (jumlah < 100000) {
+        e.preventDefault();
+        alert('❌ Jumlah pinjaman minimal Rp 100.000');
+        return false;
+      }
+
+      if (jumlah > 100000000) {
+        e.preventDefault();
+        alert('❌ Jumlah pinjaman maksimal Rp 100.000.000');
+        return false;
+      }
+
+      if (tenor < 1 || tenor > 60) {
+        e.preventDefault();
+        alert('❌ Tenor harus antara 1-60 bulan');
+        return false;
+      }
+
+      if (keperluan.length < 10) {
+        e.preventDefault();
+        alert('❌ Keperluan minimal 10 karakter');
+        return false;
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', function() {
+      calculateLoan();
+      updateTenorDisplay();
+    });
+  </script>
 {% endblock %}

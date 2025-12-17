@@ -1,0 +1,92 @@
+{% extends "base_app.html" %}
+{% block title %}Admin Dashboard - Koperasi{% endblock %}
+
+{% block content %}
+  <div class="mb-8">
+    <h1 class="text-3xl font-extrabold text-white drop-shadow">📊 Admin Dashboard</h1>
+    <p class="text-white/80 mt-2">Pantau semua aktivitas koperasi secara real-time.</p>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <!-- Card: Total Pinjaman -->
+    <div class="rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 text-white p-6 shadow-lg">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-semibold opacity-90">Total Pinjaman</p>
+          <p class="text-3xl font-bold mt-2">{{ total_loans }}</p>
+        </div>
+        <div class="text-5xl opacity-50">📋</div>
+      </div>
+    </div>
+
+    <!-- Card: Pending Approval -->
+    <div class="rounded-2xl bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-6 shadow-lg">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-semibold opacity-90">Menunggu Persetujuan</p>
+          <p class="text-3xl font-bold mt-2">{{ pending_count }}</p>
+        </div>
+        <div class="text-5xl opacity-50">⏳</div>
+      </div>
+    </div>
+
+    <!-- Card: Approved Loans -->
+    <div class="rounded-2xl bg-gradient-to-br from-green-500 to-green-600 text-white p-6 shadow-lg">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-semibold opacity-90">Disetujui</p>
+          <p class="text-3xl font-bold mt-2">{{ approved_count }}</p>
+        </div>
+        <div class="text-5xl opacity-50">✅</div>
+      </div>
+    </div>
+
+    <!-- Card: Pending Payments -->
+    <div class="rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 text-white p-6 shadow-lg">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-semibold opacity-90">Pembayaran Menunggu</p>
+          <p class="text-3xl font-bold mt-2">{{ pending_payments_count }}</p>
+        </div>
+        <div class="text-5xl opacity-50">💳</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+    <a href="{{ url_for('daftar_pinjaman') }}" class="rounded-2xl bg-white/90 backdrop-blur border border-white/30 shadow-lg p-6 hover:shadow-xl transition text-center">
+      <div class="text-4xl mb-3">📋</div>
+      <h3 class="font-bold text-slate-900 mb-1">Kelola Pinjaman</h3>
+      <p class="text-sm text-slate-600">Approve/Reject pengajuan pinjaman</p>
+    </a>
+
+    <a href="{{ url_for('admin_pembayaran') }}" class="rounded-2xl bg-white/90 backdrop-blur border border-white/30 shadow-lg p-6 hover:shadow-xl transition text-center">
+      <div class="text-4xl mb-3">💰</div>
+      <h3 class="font-bold text-slate-900 mb-1">Verifikasi Pembayaran</h3>
+      <p class="text-sm text-slate-600">Verifikasi pembayaran cicilan</p>
+    </a>
+
+    <a href="{{ url_for('admin_users') }}" class="rounded-2xl bg-white/90 backdrop-blur border border-white/30 shadow-lg p-6 hover:shadow-xl transition text-center">
+      <div class="text-4xl mb-3">👥</div>
+      <h3 class="font-bold text-slate-900 mb-1">Kelola User</h3>
+      <p class="text-sm text-slate-600">Atur role dan permissions user</p>
+    </a>
+  </div>
+
+  <!-- INFO SECTION -->
+  <div class="rounded-2xl bg-white/90 backdrop-blur border border-white/30 shadow-lg p-6">
+    <h3 class="text-lg font-bold text-slate-900 mb-4">ℹ️ Status Sistem</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <p class="text-sm text-slate-600 mb-2">Total Pengguna</p>
+        <p class="text-2xl font-bold text-slate-900">{{ total_users }}</p>
+      </div>
+      <div>
+        <p class="text-sm text-slate-600 mb-2">Total Dana Pinjam</p>
+        <p class="text-2xl font-bold text-slate-900">Rp{{ "{:,}".format(total_loan_amount) }}</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

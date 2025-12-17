@@ -469,76 +469,95 @@ body.app-layout {
     margin-top: 10px;
 }
 
-/* TABEL DAFTAR PINJAMAN */
-.daftar-card {
-    max-width: 1000px;
+/* Styling untuk tabel daftar pinjaman */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
-.table-wrapper {
-    margin-top: 14px;
-    max-height: 420px;
-    overflow: auto;
+th, td {
+  padding: 15px 20px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
 }
 
-.pinjaman-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-    background: rgba(15, 23, 42, 0.78);
+th {
+  background-color: #5c6bc0;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
-.pinjaman-table th,
-.pinjaman-table td {
-    padding: 8px 10px;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.4);
-    text-align: left;
+tr:hover {
+  background-color: #f4f4f9;
+  transition: background-color 0.3s ease;
 }
 
-.pinjaman-table th {
-    position: sticky;
-    top: 0;
-    background: rgba(15, 23, 42, 0.95);
-    z-index: 1;
+button {
+  padding: 8px 12px;
+  border-radius: 5px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.pinjaman-table tr:hover td {
-    background: rgba(30, 64, 175, 0.4);
+button:hover {
+  background-color: #e53935;
 }
 
-.btn-delete {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: #b91c1c;
-    color: #fee2e2;
-    text-decoration: none;
-    font-size: 12px;
+/* Styling untuk tombol Ajukan */
+.ajukan-btn {
+  background: linear-gradient(135deg, #6a1b9a, #8e24aa);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-delete:hover {
-    background: #dc2626;
+.ajukan-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* responsive setelah login */
-@media (max-width: 900px) {
-    .sidebar {
-        display: none;
-    }
+/* Styling untuk ikon */
+.icon {
+  margin-right: 8px;
+}
 
-    .topbar {
-        padding: 0 18px;
-    }
+/* Styling untuk sidebar */
+.sidebar {
+  background-color: #2c3e50;
+  color: white;
+  width: 250px;
+  padding: 20px;
+  border-radius: 10px;
+}
 
-    .app-content {
-        padding: 24px 16px;
-    }
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
 
-    .form-card {
-        border-radius: 20px;
-        padding: 20px 18px;
-    }
+.sidebar a:hover {
+  background-color: #34495e;
+}
 
-    .daftar-card {
-        max-width: 100%;
-    }
+/* Hover effect untuk baris */
+tr:hover {
+  background-color: #f1f1f1;
 }
