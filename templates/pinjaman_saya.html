@@ -2,100 +2,84 @@
 {% block title %}Pinjaman Saya - Koperasi{% endblock %}
 
 {% block content %}
-  <div class="mb-6">
+<div class="mb-6">
     <h1 class="text-2xl font-extrabold text-white drop-shadow">Pinjaman Saya</h1>
     <p class="text-white/80 mt-1">Kelola semua pinjaman Anda di satu tempat.</p>
-  </div>
+</div>
 
-  {% if pinjaman_list %}
+{% if pinjaman_list %}
     <div class="space-y-4">
-      {% for p in pinjaman_list %}
+    {% for p in pinjaman_list %}
         <div class="rounded-2xl bg-white/90 backdrop-blur border border-white/30 shadow-lg overflow-hidden hover:shadow-xl transition">
-          <div class="p-6">
-            <!-- Header dengan ID dan Status -->
-            <div class="flex items-center justify-between mb-4">
-              <div>
-                <h3 class="text-lg font-bold text-slate-900">Pinjaman #{{ p.id }}</h3>
-                <p class="text-sm text-slate-600 mt-1">{{ p.keperluan }}</p>
-              </div>
-              <div class="text-right">
-                {% if p.loan_status %}
-                  {% set status = p.loan_status.status %}
-                  {% if status == "pending" %}
-                    <span class="inline-block px-4 py-2 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800">⏳ Menunggu Persetujuan</span>
-                  {% elif status == "approved" %}
-                    <span class="inline-block px-4 py-2 rounded-full text-xs font-bold bg-blue-100 text-blue-800">✅ Disetujui</span>
-                  {% elif status == "rejected" %}
-                    <span class="inline-block px-4 py-2 rounded-full text-xs font-bold bg-red-100 text-red-800">❌ Ditolak</span>
-                  {% elif status == "disbursement_requested" %}
-                    <span class="inline-block px-4 py-2 rounded-full text-xs font-bold bg-purple-100 text-purple-800">📤 Pengambilan Diajukan</span>
-                  {% elif status == "disbursed" %}
-                    <span class="inline-block px-4 py-2 rounded-full text-xs font-bold bg-green-100 text-green-800">💰 Sudah Dicairkan</span>
-                  {% elif status == "lunas" %}
-                    <span class="inline-block px-4 py-2 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800">🏁 Lunas</span>
-                  {% endif %}
-                {% else %}
-                  <span class="inline-block px-4 py-2 rounded-full text-xs font-bold bg-gray-100 text-gray-800">❓ Belum ada status</span>
-                {% endif %}
-              </div>
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Pinjaman #{{ p.id }}</h3>
+                        <p class="text-sm text-slate-600 mt-1">{{ p.keperluan }}</p>
+                    </div>
+                    <div class="text-right">
+                        {% if p.status == 'pending' %}
+                            <span class="inline-block px-4 py-2 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800">⏳ Menunggu Persetujuan</span>
+                        {% elif p.status == 'approved' %}
+                            <span class="inline-block px-4 py-2 rounded-full text-xs font-bold bg-blue-100 text-blue-800">✅ Disetujui</span>
+                        {% elif p.status == 'rejected' %}
+                            <span class="inline-block px-4 py-2 rounded-full text-xs font-bold bg-red-100 text-red-800">❌ Ditolak</span>
+                        {% elif p.status == 'disbursed' %}
+                            <span class="inline-block px-4 py-2 rounded-full text-xs font-bold bg-green-100 text-green-800">💰 Sudah Dicairkan</span>
+                        {% elif p.status == 'lunas' %}
+                            <span class="inline-block px-4 py-2 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800">🏁 Lunas</span>
+                        {% else %}
+                            <span class="inline-block px-4 py-2 rounded-full text-xs font-bold bg-gray-100 text-gray-800">❓ Status: {{ p.status }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 py-4 border-y border-slate-200">
+                    <div>
+                        <p class="text-xs text-slate-500 uppercase font-semibold">Jumlah Pinjaman</p>
+                        <p class="text-lg font-bold text-slate-900">Rp{{ "{:,.0f}".format(p.jumlah) }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 uppercase font-semibold">Tenor</p>
+                        <p class="text-lg font-bold text-slate-900">{{ p.tenor }} Bulan</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 uppercase font-semibold">Total Bayar</p>
+                        <p class="text-lg font-bold text-slate-900">Rp{{ "{:,.0f}".format(p.total_bayar) }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 uppercase font-semibold">Cicilan/Bulan</p>
+                        <p class="text-lg font-bold text-slate-900">Rp{{ "{:,.0f}".format(p.angsuran) }}</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 flex-wrap">
+                    {% if p.status == "approved" %}
+                        <button class="px-4 py-2 bg-purple-500 text-white text-sm font-semibold rounded-lg opacity-50 cursor-not-allowed">
+                            Menunggu Pencairan
+                        </button>
+                    {% endif %}
+
+                    {% if p.status == "disbursed" %}
+                        <a href="#" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition inline-block">
+                            💳 Bayar Cicilan
+                        </a>
+                    {% endif %}
+
+                    {% if p.status == "pending" %}
+                        <span class="text-xs text-slate-400 italic mt-2">Menunggu konfirmasi admin untuk tindakan lebih lanjut.</span>
+                    {% endif %}
+                </div>
             </div>
-
-            <!-- Detail Pinjaman (Grid) -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 py-4 border-y border-slate-200">
-              <div>
-                <p class="text-xs text-slate-500 uppercase font-semibold">Jumlah Pinjaman</p>
-                <p class="text-lg font-bold text-slate-900">Rp{{ "{:,}".format(p.jumlah) }}</p>
-              </div>
-              <div>
-                <p class="text-xs text-slate-500 uppercase font-semibold">Tenor</p>
-                <p class="text-lg font-bold text-slate-900">{{ p.tenor }} Bulan</p>
-              </div>
-              <div>
-                <p class="text-xs text-slate-500 uppercase font-semibold">Total Bayar</p>
-                <p class="text-lg font-bold text-slate-900">Rp{{ "{:,}".format(p.total_bayar|int) }}</p>
-              </div>
-              <div>
-                <p class="text-xs text-slate-500 uppercase font-semibold">Cicilan/Bulan</p>
-                <p class="text-lg font-bold text-slate-900">Rp{{ "{:,}".format(p.angsuran|int) }}</p>
-              </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex gap-3 flex-wrap">
-              {% if p.loan_status %}
-                {% set status = p.loan_status.status %}
-                
-                {% if status == "approved" %}
-                  <form action="{{ url_for('ajukan_pengambilan', pinjaman_id=p.id) }}" method="POST" class="inline">
-                    <button type="submit" class="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white text-sm font-semibold rounded-lg transition">
-                      📤 Ajukan Pengambilan
-                    </button>
-                  </form>
-                {% endif %}
-
-                {% if status in ["disbursed", "lunas"] %}
-                  <a href="{{ url_for('bayar_pinjaman', pinjaman_id=p.id) }}" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition inline-block">
-                    💳 Bayar Cicilan
-                  </a>
-                {% endif %}
-
-                {% if status in ["pending", "approved", "disbursement_requested", "disbursed"] %}
-                  <a href="{{ url_for('hapus_pinjaman', pinjaman_id=p.id) }}" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded-lg transition inline-block" onclick="return confirm('Hapus pinjaman ini?');">
-                    🗑️ Hapus
-                  </a>
-                {% endif %}
-              {% endif %}
-            </div>
-          </div>
         </div>
-      {% endfor %}
+    {% endfor %}
     </div>
-  {% else %}
+{% else %}
     <div class="rounded-2xl bg-white/80 backdrop-blur border border-white/30 shadow p-12 text-center">
-      <p class="text-slate-600 text-lg mb-4">📋 Belum ada pinjaman yang diajukan.</p>
-      <a href="{{ url_for('pengajuan') }}" class="inline-block px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-lg transition">
-        + Buat Pengajuan Pinjaman
-      </a>
+        <p class="text-slate-600 text-lg mb-4">📋 Belum ada pinjaman yang diajukan.</p>
+        <a href="{{ url_for('pengajuan') }}" class="inline-block px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-lg transition">
+            + Buat Pengajuan Pinjaman
+        </a>
     </div>
-  {% endif %}
+{% endif %}
 {% endblock %}

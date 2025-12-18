@@ -4,107 +4,88 @@
 {% block content %}
   <div class="mb-6">
     <h1 class="text-2xl font-extrabold text-white drop-shadow">👥 Kelola User</h1>
-    <p class="text-white/80 mt-1">Atur role dan permissions untuk semua user.</p>
+    <p class="text-white/80 mt-1">Atur role dan permissions untuk semua user yang terdaftar.</p>
   </div>
 
   {% if users %}
-    <div class="rounded-3xl bg-gradient-to-b from-white/95 to-white/80 backdrop-blur border border-white/40 shadow-2xl overflow-hidden">
+    <div class="rounded-3xl bg-white/95 backdrop-blur border border-white/40 shadow-2xl overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-sm">
-          <thead class="bg-gradient-to-r from-slate-900 to-slate-800 text-white sticky top-0">
+          <thead class="bg-slate-900 text-white sticky top-0">
             <tr>
-              <th class="text-left px-4 py-4 font-extrabold text-xs uppercase tracking-wider">ID</th>
-              <th class="text-left px-4 py-4 font-extrabold text-xs uppercase tracking-wider">Nama</th>
-              <th class="text-left px-4 py-4 font-extrabold text-xs uppercase tracking-wider">Username</th>
-              <th class="text-left px-4 py-4 font-extrabold text-xs uppercase tracking-wider">Email</th>
-              <th class="text-left px-4 py-4 font-extrabold text-xs uppercase tracking-wider">Telepon</th>
-              <th class="text-center px-4 py-4 font-extrabold text-xs uppercase tracking-wider">Status</th>
-              <th class="text-center px-4 py-4 font-extrabold text-xs uppercase tracking-wider">Role</th>
-              <th class="text-left px-4 py-4 font-extrabold text-xs uppercase tracking-wider">Action</th>
+              <th class="text-left px-4 py-4 font-bold text-xs uppercase">ID</th>
+              <th class="text-left px-4 py-4 font-bold text-xs uppercase">Nama & Akun</th>
+              <th class="text-left px-4 py-4 font-bold text-xs uppercase">Kontak</th>
+              <th class="text-center px-4 py-4 font-bold text-xs uppercase">Status Verifikasi</th>
+              <th class="text-center px-4 py-4 font-bold text-xs uppercase">Role</th>
+              <th class="text-center px-4 py-4 font-bold text-xs uppercase">Action</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100">
             {% for user in users %}
-            <tr class="hover:bg-gradient-to-r hover:from-purple-50 hover:to-blue-50 transition-all duration-200 border-l-4 border-transparent hover:border-purple-500">
-              <td class="px-4 py-4 font-bold text-slate-900 text-sm">{{ user.id }}</td>
-              <td class="px-4 py-4 text-slate-800 font-medium">{{ user.nama }}</td>
-              <td class="px-4 py-4 text-slate-700 font-mono text-xs bg-slate-100 rounded px-2 py-1 inline-block">{{ user.username }}</td>
-              <td class="px-4 py-4 text-slate-600 text-xs">{{ user.email }}</td>
-              <td class="px-4 py-4 text-slate-600 text-xs">{{ user.telepon }}</td>
+            <tr class="hover:bg-slate-50 transition-colors border-l-4 border-transparent hover:border-purple-500">
+              <td class="px-4 py-4 font-bold text-slate-900">{{ user.id }}</td>
+              <td class="px-4 py-4">
+                <div class="font-medium text-slate-800">{{ user.nama }}</div>
+                <div class="text-xs font-mono text-purple-600 bg-purple-50 px-1.5 rounded inline-block">@{{ user.username }}</div>
+              </td>
+              <td class="px-4 py-4">
+                <div class="text-xs text-slate-600">{{ user.email }}</div>
+                <div class="text-xs text-slate-500">{{ user.telepon }}</div>
+              </td>
               <td class="px-4 py-4 text-center">
                 {% if user.is_verified %}
-                  <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-green-100 to-green-50 text-green-700 border border-green-200">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200">
                     ✅ Verified
                   </span>
                 {% else %}
-                  <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-yellow-100 to-yellow-50 text-yellow-700 border border-yellow-200 animate-pulse">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700 border border-yellow-200 animate-pulse">
                     ⏳ Pending
                   </span>
                 {% endif %}
               </td>
               <td class="px-4 py-4 text-center">
                 {% if user.role == "admin" %}
-                  <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-red-100 to-red-50 text-red-700 border border-red-200">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 border border-red-200">
                     👑 Admin
                   </span>
                 {% else %}
-                  <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 border border-blue-200">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 border border-blue-200">
                     👤 User
                   </span>
                 {% endif %}
               </td>
               <td class="px-4 py-4">
-                <div class="flex gap-1.5 items-center">
-                  <!-- Approve/Reject Button -->
+                <div class="flex gap-2 justify-center">
                   {% if user.username != session.get('username') %}
+                    
                     {% if not user.is_verified %}
                       <a href="{{ url_for('admin_approve_user', user_id=user.id) }}" 
-                         class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-xs font-bold rounded-lg transition-all duration-200 shadow hover:shadow-lg transform hover:scale-105"
-                         title="Approve user"
-                         onclick="return confirm('Approve user {{ user.username }}?');">
-                        ✅ Acc
+                         class="px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white text-xs font-bold rounded-lg shadow-sm transition-transform hover:scale-105"
+                         onclick="return confirm('Setujui dokumen {{ user.nama }}?');">
+                        Setujui
                       </a>
                     {% else %}
                       <a href="{{ url_for('admin_reject_user', user_id=user.id) }}" 
-                         class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white text-xs font-bold rounded-lg transition-all duration-200 shadow hover:shadow-lg transform hover:scale-105"
-                         title="Reject user"
-                         onclick="return confirm('Tolak user {{ user.username }}?');">
-                        ⛔ Tolak
+                         class="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded-lg shadow-sm transition-transform hover:scale-105"
+                         onclick="return confirm('Batalkan verifikasi {{ user.nama }}?');">
+                        Batalkan
                       </a>
                     {% endif %}
-                  {% else %}
-                    <span class="inline-flex items-center px-2.5 py-1.5 bg-gray-200 text-gray-600 text-xs font-bold rounded-lg">
-                      Akun Anda
-                    </span>
-                  {% endif %}
 
-                  <!-- Change Role Button -->
-                  {% if user.username != session.get('username') %}
-                    {% if user.role == "user" %}
-                      <a href="{{ url_for('admin_set_role', user_id=user.id, role='admin') }}" 
-                         class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white text-xs font-bold rounded-lg transition-all duration-200 shadow hover:shadow-lg transform hover:scale-105"
-                         title="Make Admin"
-                         onclick="return confirm('Ubah role menjadi Admin?');">
-                        👑 Admin
-                      </a>
-                    {% else %}
-                      <a href="{{ url_for('admin_set_role', user_id=user.id, role='user') }}" 
-                         class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-xs font-bold rounded-lg transition-all duration-200 shadow hover:shadow-lg transform hover:scale-105"
-                         title="Make User"
-                         onclick="return confirm('Turunkan role menjadi User?');">
-                        👤 User
-                      </a>
-                    {% endif %}
-                  {% endif %}
-
-                  <!-- Delete Button -->
-                  {% if user.username != session.get('username') %}
-                    <a href="{{ url_for('admin_delete_user', user_id=user.id) }}" 
-                       class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-gradient-to-r from-red-700 to-red-800 hover:from-red-800 hover:to-red-900 text-white text-xs font-bold rounded-lg transition-all duration-200 shadow hover:shadow-lg transform hover:scale-105"
-                       title="Delete user"
-                       onclick="return confirm('Hapus user ini? Tidak bisa dibatalkan!');">
-                      🗑️ Hapus
+                    <a href="{{ url_for('admin_set_role', user_id=user.id, role='admin' if user.role == 'user' else 'user') }}" 
+                       class="px-3 py-1.5 bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold rounded-lg shadow-sm transition-transform hover:scale-105">
+                       {% if user.role == 'user' %} Jadi Admin {% else %} Jadi User {% endif %}
                     </a>
+
+                    <a href="{{ url_for('admin_delete_user', user_id=user.id) }}" 
+                       class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg shadow-sm transition-transform hover:scale-105"
+                       onclick="return confirm('Hapus user {{ user.nama }}?');">
+                       🗑️
+                    </a>
+
+                  {% else %}
+                    <span class="text-xs text-slate-400 italic">Akun Anda</span>
                   {% endif %}
                 </div>
               </td>
@@ -116,7 +97,7 @@
     </div>
   {% else %}
     <div class="rounded-2xl bg-white/80 backdrop-blur border border-white/30 shadow p-12 text-center">
-      <p class="text-slate-600 text-lg">👥 Tidak ada user.</p>
+      <p class="text-slate-600 text-lg font-medium">👥 Tidak ada data pengguna untuk ditampilkan.</p>
     </div>
   {% endif %}
 {% endblock %}

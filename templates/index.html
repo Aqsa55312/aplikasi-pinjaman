@@ -1,208 +1,36 @@
 {% extends "base_app.html" %}
-{% block title %}Dashboard - Koperasi{% endblock %}
-
 {% block content %}
-  <style>
-    .card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    }
+<div class="max-w-4xl mx-auto p-8 mt-10">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="col-span-2 rounded-2xl bg-white/5 p-6 border border-white/10">
+            <h2 class="text-2xl font-extrabold text-white mb-2">Selamat datang, {{ user.nama or user.username }}!</h2>
+            <p class="text-white/70 mb-4">Kelola pengajuan dan dokumen Anda di dashboard ini.</p>
 
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .animate-slide-up {
-      animation: slideUp 0.5s ease-out;
-    }
-  </style>
-
-  <!-- Header -->
-  <div class="mb-8 animate-slide-up">
-    <h1 class="text-4xl font-extrabold text-white drop-shadow-lg mb-2">Dashboard</h1>
-    <p class="text-white/90 text-lg">Selamat datang, <span class="font-bold">{{ session.get('nama') or session.get('username') }}</span>!</p>
-  </div>
-
-  <!-- Quick Stats -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-    <!-- Card 1: Ajukan Pinjaman -->
-    {% if session.get('role') == 'user' %}
-    <a href="{{ url_for('pengajuan') }}" class="card glass rounded-3xl p-8 border border-white/30 shadow-2xl group">
-      <div class="flex items-center justify-between mb-6">
-        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
-          <span class="text-4xl">📝</span>
-        </div>
-        <svg class="w-8 h-8 text-white/50 group-hover:text-white group-hover:translate-x-2 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-        </svg>
-      </div>
-      <h3 class="text-2xl font-bold text-white mb-2">Ajukan Pinjaman</h3>
-      <p class="text-white/80 text-sm">Buat pengajuan pinjaman baru dengan cepat dan mudah</p>
-    </a>
-
-    <!-- Card 2: Pinjaman Saya -->
-    <a href="{{ url_for('pinjaman_saya') }}" class="card glass rounded-3xl p-8 border border-white/30 shadow-2xl group">
-      <div class="flex items-center justify-between mb-6">
-        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
-          <span class="text-4xl">📌</span>
-        </div>
-        <svg class="w-8 h-8 text-white/50 group-hover:text-white group-hover:translate-x-2 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-        </svg>
-      </div>
-      <h3 class="text-2xl font-bold text-white mb-2">Pinjaman Saya</h3>
-      <p class="text-white/80 text-sm">Lihat daftar pinjaman yang kamu ajukan</p>
-    </a>
-    {% endif %}
-
-    <!-- Card 3: Daftar Pinjaman -->
-    <a href="{{ url_for('daftar_pinjaman') }}" class="card glass rounded-3xl p-8 border border-white/30 shadow-2xl group">
-      <div class="flex items-center justify-between mb-6">
-        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
-          <span class="text-4xl">📄</span>
-        </div>
-        <svg class="w-8 h-8 text-white/50 group-hover:text-white group-hover:translate-x-2 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-        </svg>
-      </div>
-      <h3 class="text-2xl font-bold text-white mb-2">Daftar Pinjaman</h3>
-      <p class="text-white/80 text-sm">Lihat riwayat pinjaman {% if session.get('role') == 'admin' %}semua anggota{% else %}kamu{% endif %}</p>
-    </a>
-
-    <!-- Card 4: Kelola User (Admin Only) -->
-    {% if session.get('role') == 'admin' %}
-    <a href="{{ url_for('admin_users') }}" class="card glass rounded-3xl p-8 border border-white/30 shadow-2xl group">
-      <div class="flex items-center justify-between mb-6">
-        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
-          <span class="text-4xl">🛡️</span>
-        </div>
-        <svg class="w-8 h-8 text-white/50 group-hover:text-white group-hover:translate-x-2 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-        </svg>
-      </div>
-      <h3 class="text-2xl font-bold text-white mb-2">Kelola User</h3>
-      <p class="text-white/80 text-sm">Manajemen pengguna dan hak akses sistem</p>
-    </a>
-    {% endif %}
-  </div>
-
-  <!-- Info Cards -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    <!-- Informasi Sistem -->
-    <div class="glass rounded-3xl p-8 border border-white/30 shadow-2xl">
-      <div class="flex items-center gap-4 mb-6">
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center shadow-lg">
-          <span class="text-3xl">ℹ️</span>
-        </div>
-        <h2 class="text-2xl font-bold text-white">Informasi Sistem</h2>
-      </div>
-
-      <div class="space-y-4">
-        <div class="flex items-center justify-between p-4 bg-white/10 rounded-xl backdrop-blur">
-          <span class="text-white/80 font-medium">Status Sistem</span>
-          <div class="flex items-center gap-2">
-            <span class="h-3 w-3 rounded-full bg-green-400 animate-pulse"></span>
-            <span class="text-white font-bold">Online</span>
-          </div>
+            <div class="mt-6">
+                {% if user.ktp_npwp and user.kk and user.buku_tabungan and user.mutasi_rekening %}
+                    <a href="{{ url_for('pengajuan') }}" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition">
+                            Mulai Pengajuan Pinjaman
+                    </a>
+                {% else %}
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4 rounded">
+                            <p class="text-yellow-700">Anda belum melengkapi dokumen persyaratan wajib.</p>
+                    </div>
+                    <a href="{{ url_for('halaman_dokumen') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition">
+                            Lengkapi Dokumen Sekarang
+                    </a>
+                {% endif %}
+            </div>
         </div>
 
-        <div class="flex items-center justify-between p-4 bg-white/10 rounded-xl backdrop-blur">
-          <span class="text-white/80 font-medium">Role Anda</span>
-          <span class="px-4 py-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white font-bold text-sm uppercase">
-            {{ session.get('role') or '-' }}
-          </span>
+        <div class="rounded-2xl bg-white/5 p-6 border border-white/10">
+            <h3 class="text-lg font-bold text-white mb-3">Status Dokumen</h3>
+            <ul class="space-y-3 text-white/80">
+                <li>FC KTP & NPWP: <span class="font-semibold text-white">{{ user.ktp_npwp or 'Belum' }}</span></li>
+                <li>FC KK: <span class="font-semibold text-white">{{ user.kk or 'Belum' }}</span></li>
+                <li>Buku Tabungan: <span class="font-semibold text-white">{{ user.buku_tabungan or 'Belum' }}</span></li>
+                <li>Mutasi Rekening: <span class="font-semibold text-white">{{ user.mutasi_rekening or 'Belum' }}</span></li>
+            </ul>
         </div>
-
-        <div class="flex items-center justify-between p-4 bg-white/10 rounded-xl backdrop-blur">
-          <span class="text-white/80 font-medium">Username</span>
-          <span class="text-white font-bold">@{{ session.get('username') or '-' }}</span>
-        </div>
-      </div>
     </div>
-
-    <!-- Panduan Cepat -->
-    <div class="glass rounded-3xl p-8 border border-white/30 shadow-2xl">
-      <div class="flex items-center gap-4 mb-6">
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
-          <span class="text-3xl">📚</span>
-        </div>
-        <h2 class="text-2xl font-bold text-white">Panduan Cepat</h2>
-      </div>
-
-      <div class="space-y-3">
-        {% if session.get('role') == 'user' %}
-        <div class="p-4 bg-white/10 rounded-xl backdrop-blur">
-          <div class="flex items-start gap-3">
-            <span class="text-2xl flex-shrink-0">1️⃣</span>
-            <div>
-              <h4 class="text-white font-bold mb-1">Ajukan Pinjaman</h4>
-              <p class="text-white/70 text-sm">Isi form pengajuan dengan lengkap dan jelas</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-4 bg-white/10 rounded-xl backdrop-blur">
-          <div class="flex items-start gap-3">
-            <span class="text-2xl flex-shrink-0">2️⃣</span>
-            <div>
-              <h4 class="text-white font-bold mb-1">Tunggu Persetujuan</h4>
-              <p class="text-white/70 text-sm">Admin akan review dalam 1-3 hari kerja</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-4 bg-white/10 rounded-xl backdrop-blur">
-          <div class="flex items-start gap-3">
-            <span class="text-2xl flex-shrink-0">3️⃣</span>
-            <div>
-              <h4 class="text-white font-bold mb-1">Bayar Angsuran</h4>
-              <p class="text-white/70 text-sm">Bayar tepat waktu setiap bulannya</p>
-            </div>
-          </div>
-        </div>
-        {% else %}
-        <div class="p-4 bg-white/10 rounded-xl backdrop-blur">
-          <div class="flex items-start gap-3">
-            <span class="text-2xl flex-shrink-0">👤</span>
-            <div>
-              <h4 class="text-white font-bold mb-1">Kelola Pengguna</h4>
-              <p class="text-white/70 text-sm">Tambah, edit, atau hapus data pengguna</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-4 bg-white/10 rounded-xl backdrop-blur">
-          <div class="flex items-start gap-3">
-            <span class="text-2xl flex-shrink-0">✅</span>
-            <div>
-              <h4 class="text-white font-bold mb-1">Review Pengajuan</h4>
-              <p class="text-white/70 text-sm">Setujui atau tolak pengajuan pinjaman</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-4 bg-white/10 rounded-xl backdrop-blur">
-          <div class="flex items-start gap-3">
-            <span class="text-2xl flex-shrink-0">📊</span>
-            <div>
-              <h4 class="text-white font-bold mb-1">Monitor Pinjaman</h4>
-              <p class="text-white/70 text-sm">Pantau status pembayaran anggota</p>
-            </div>
-          </div>
-        </div>
-        {% endif %}
-      </div>
-    </div>
-  </div>
+</div>
 {% endblock %}

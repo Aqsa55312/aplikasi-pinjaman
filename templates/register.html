@@ -1,140 +1,120 @@
 {% extends "base_auth.html" %}
 
-{% block title %}Register - Koperasi{% endblock %}
+{% block title %}Daftar Akun - Koperasi{% endblock %}
 
 {% block content %}
-<section class="relative min-h-screen overflow-hidden">
-  <!-- Background (tetap, kalau base_auth kamu sudah punya background, ini tetap aman) -->
-  <div class="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950/80 to-purple-950/70"></div>
-  <div class="absolute inset-0 [background:radial-gradient(900px_500px_at_30%_20%,rgba(255,255,255,0.10),transparent_60%)]"></div>
-  <div class="absolute inset-0 [background:radial-gradient(900px_500px_at_70%_70%,rgba(168,85,247,0.14),transparent_60%)]"></div>
+<section class="relative min-h-screen overflow-hidden" id="parallax-root">
+  <div class="absolute inset-0 z-0">
+    <div
+      class="absolute inset-0 will-change-transform bg-cover bg-center"
+      data-depth="0.10"
+      style="
+        background-image: 
+          linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.6)),
+          url('https://images.unsplash.com/photo-1554224311-beee460c201f?w=1920&q=85');
+        background-size: cover;
+        background-position: center;
+        transform: scale(1.08);
+      "
+    ></div>
 
-  <div class="relative z-10">
-    <div class="mx-auto max-w-6xl px-6 py-14">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-        <!-- LEFT -->
+    <div
+      class="absolute inset-0 will-change-transform opacity-40 mix-blend-soft-light"
+      data-depth="0.18"
+      style="
+        background-image: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1920&q=85');
+        background-size: cover;
+        background-position: center;
+        transform: scale(1.10);
+      "
+    ></div>
+
+    <div class="absolute inset-0 will-change-transform" data-depth="0.12">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
+    <div class="absolute inset-0 bg-gradient-to-br from-slate-950/70 via-slate-950/60 to-purple-950/55"></div>
+    <div class="absolute inset-0 [background:radial-gradient(1200px_600px_at_30%_20%,rgba(255,255,255,0.10),transparent_60%)]"></div>
+    <div class="absolute inset-0 [background:radial-gradient(900px_500px_at_70%_70%,rgba(168,85,247,0.14),transparent_60%)]"></div>
+    <div class="absolute inset-0 opacity-[0.10] mix-blend-overlay pointer-events-none noise-layer"></div>
+  </div>
+
+  <div class="relative z-10 min-h-screen">
+    <div class="mx-auto max-w-6xl px-6 py-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+
         <div class="space-y-6">
           <div class="inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
             <div class="h-10 w-10 rounded-xl bg-white/10 grid place-items-center border border-white/10">
-              <span class="text-lg">🧾</span>
+              <span class="text-lg">📝</span>
             </div>
             <div>
-              <div class="text-xs tracking-widest text-white/70">REGISTRASI</div>
-              <div class="text-sm font-semibold text-white/90">Buat akun baru (default role: user)</div>
+              <div class="text-xs tracking-widest text-white/70">SISTEM KOPERASI</div>
+              <div class="text-sm font-semibold text-white/90">Pendaftaran Anggota Baru</div>
             </div>
           </div>
 
           <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight text-white drop-shadow">
-            Buat akun<br />
-            <span class="text-white/80">untuk mulai mengajukan pinjaman.</span>
+            Mulai langkah sukses<br />
+            <span class="text-white/80">bersama komunitas kami.</span>
           </h1>
 
           <p class="text-white/70 max-w-xl">
-            Isi data dengan benar. Setelah terdaftar, kamu bisa login dan mengajukan pinjaman dari dashboard.
+            Bergabunglah sekarang untuk mendapatkan kemudahan akses pinjaman modal usaha dan simpanan masa depan dengan proses yang transparan.
           </p>
-
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl">
-            <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-4">
-              <div class="font-semibold text-white">Cepat</div>
-              <div class="text-sm text-white/70 mt-1">Form ringkas.</div>
-            </div>
-            <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-4">
-              <div class="font-semibold text-white">Akurat</div>
-              <div class="text-sm text-white/70 mt-1">Validasi wajib isi.</div>
-            </div>
-            <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-4">
-              <div class="font-semibold text-white">Aman</div>
-              <div class="text-sm text-white/70 mt-1">Akun terkontrol.</div>
-            </div>
-          </div>
         </div>
 
-        <!-- RIGHT: CARD -->
         <div class="lg:justify-self-end w-full">
-          <div class="w-full max-w-md rounded-3xl border border-white/10 bg-slate-900/65 backdrop-blur-xl shadow-xl">
-            <div class="p-6 border-b border-white/10">
-              <h2 class="text-2xl font-bold text-white">Registrasi</h2>
-              <p class="text-sm text-white/70 mt-1">Buat akun baru</p>
+          <div class="w-full max-w-md rounded-3xl border border-white/10 bg-slate-900/65 backdrop-blur-xl shadow-xl overflow-hidden">
+            <div class="p-6 border-b border-white/10 bg-white/5">
+              <h2 class="text-2xl font-bold text-white">Daftar Akun</h2>
+              <p class="text-sm text-white/70 mt-1">Lengkapi data diri Anda di bawah ini</p>
             </div>
 
-            <div class="p-6">
+            <div class="p-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
               <form method="POST" class="space-y-4">
                 <div class="space-y-1">
-                  <label class="text-sm text-white/80">Nama</label>
-                  <input
-                    name="nama"
-                    class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none
-                           placeholder:text-white/40 focus:ring-4 focus:ring-indigo-200/30"
-                    placeholder="Nama lengkap"
-                    required
-                  />
+                  <label class="text-sm text-white/80">Nama Lengkap</label>
+                  <input type="text" name="nama" class="input-field" placeholder="Nama sesuai KTP" required />
                 </div>
 
-                <div class="space-y-1">
-                  <label class="text-sm text-white/80">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none
-                           placeholder:text-white/40 focus:ring-4 focus:ring-indigo-200/30"
-                    placeholder="email@domain.com"
-                    required
-                  />
-                </div>
-
-                <div class="space-y-1">
-                  <label class="text-sm text-white/80">Telepon</label>
-                  <input
-                    name="telepon"
-                    class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none
-                           placeholder:text-white/40 focus:ring-4 focus:ring-indigo-200/30"
-                    placeholder="08xxxxxxxxxx"
-                    required
-                  />
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                      <label class="text-sm text-white/80">Email</label>
+                      <input type="email" name="email" class="input-field" placeholder="email@anda.com" required />
+                    </div>
+                    <div class="space-y-1">
+                      <label class="text-sm text-white/80">Telepon</label>
+                      <input type="text" name="telepon" class="input-field" placeholder="0812..." required />
+                    </div>
                 </div>
 
                 <div class="space-y-1">
                   <label class="text-sm text-white/80">Username</label>
-                  <input
-                    name="username"
-                    autocomplete="username"
-                    class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none
-                           placeholder:text-white/40 focus:ring-4 focus:ring-indigo-200/30"
-                    placeholder="username"
-                    required
-                  />
+                  <input type="text" name="username" class="input-field" placeholder="Buat username unik" required />
                 </div>
 
                 <div class="space-y-1">
                   <label class="text-sm text-white/80">Password</label>
-                  <input
-                    type="password"
-                    name="password"
-                    autocomplete="new-password"
-                    class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none
-                           placeholder:text-white/40 focus:ring-4 focus:ring-indigo-200/30"
-                    placeholder="Buat password"
-                    required
-                  />
+                  <input type="password" name="password" class="input-field" placeholder="Min. 8 karakter" required />
                 </div>
 
-                <button
-                  type="submit"
-                  class="w-full rounded-xl bg-white text-slate-900 font-semibold py-3 transition hover:bg-white/90"
-                >
-                  Daftar
+                <button type="submit" class="w-full rounded-xl bg-white text-slate-900 font-bold py-3 mt-2 transition hover:bg-white/90 shadow-lg shadow-white/10">
+                  Buat Akun Sekarang
                 </button>
 
-                <p class="text-sm text-white/70 text-center">
+                <p class="text-sm text-white/70 text-center mt-4">
                   Sudah punya akun?
-                  <a href="{{ url_for('login') }}" class="font-semibold text-white hover:underline">Login</a>
+                  <a href="{{ url_for('login') }}" class="font-semibold text-white hover:underline">Masuk</a>
                 </p>
               </form>
             </div>
           </div>
 
-          <div class="mt-6 text-center text-xs text-white/50">
-            © 2025 Koperasi Simpan Pinjam
+          <div class="mt-4 text-center text-xs text-white/50">
+            © {{ current_year|default('2025') }} Koperasi Simpan Pinjam
           </div>
         </div>
 
@@ -142,4 +122,71 @@
     </div>
   </div>
 </section>
+
+<style>
+  .input-field {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.75rem 1rem;
+    color: white;
+    outline: none;
+    transition: all 0.3s;
+  }
+  .input-field::placeholder { color: rgba(255, 255, 255, 0.4); }
+  .input-field:focus {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.4);
+  }
+
+  /* Custom scrollbar untuk form yang panjang */
+  .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+  /* Style Tambahan (Sama dengan Login) */
+  .noise-layer {
+    background-image:
+      radial-gradient(circle at 10% 10%, rgba(255,255,255,0.18) 0 1px, transparent 2px),
+      radial-gradient(circle at 70% 30%, rgba(255,255,255,0.12) 0 1px, transparent 2px);
+    background-size: 120px 120px;
+    filter: contrast(120%);
+  }
+  .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; mix-blend-mode: screen; animation: float 20s ease-in-out infinite; }
+  .orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(139, 92, 246, 0.8) 0%, transparent 70%); top: -10%; left: -10%; }
+  .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(59, 130, 246, 0.6) 0%, transparent 70%); bottom: -15%; right: -10%; animation-delay: -5s; }
+  .orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(236, 72, 153, 0.5) 0%, transparent 70%); top: 40%; left: 50%; animation-delay: -10s; }
+  @keyframes float { 0%, 100% { transform: translate(0, 0); } 33% { transform: translate(50px, -50px); } 66% { transform: translate(-50px, 50px); } }
+</style>
 {% endblock %}
+
+{% block scripts %}
+<script>
+// PARALLAX SCRIPT (Identik dengan Login agar seamless)
+(() => {
+  const root = document.getElementById("parallax-root");
+  if (!root) return;
+  const layers = Array.from(root.querySelectorAll("[data-depth]"));
+  let targetX = 0, targetY = 0;
+  let curX = 0, curY = 0;
+
+  window.addEventListener("mousemove", (e) => {
+    targetX = (e.clientX / window.innerWidth) * 2 - 1;
+    targetY = (e.clientY / window.innerHeight) * 2 - 1;
+  }, { passive: true });
+
+  function animate() {
+    curX += (targetX - curX) * 0.08;
+    curY += (targetY - curY) * 0.08;
+    for (const el of layers) {
+      const depth = parseFloat(el.getAttribute("data-depth")) || 0.1;
+      el.style.transform = `translate3d(${curX * 30 * depth}px, ${curY * 20 * depth}px, 0) scale(1.08)`;
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+</script>
+{% endblock %} 

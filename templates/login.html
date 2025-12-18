@@ -7,27 +7,48 @@
 <section class="relative min-h-screen overflow-hidden" id="parallax-root">
   <!-- LAYERS -->
   <div class="absolute inset-0 z-0">
-    <!-- Layer paling belakang (HD photo) -->
+    <!-- Layer 1: Photo koperasi/banking (base) -->
     <div
-      class="absolute inset-0 will-change-transform"
+      class="absolute inset-0 will-change-transform bg-cover bg-center"
       data-depth="0.10"
       style="
-        background-image: url('{{ url_for('static', filename='img/hero-koperasi.jpg') }}');
+        background-image: 
+          linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.6)),
+          url('https://images.unsplash.com/photo-1554224311-beee460c201f?w=1920&q=85');
         background-size: cover;
         background-position: center;
         transform: scale(1.08);
       "
     ></div>
 
-    <!-- Layer kedua (HD photo) -->
+    <!-- Layer 2: Photo teamwork/cooperation (overlay) -->
     <div
-      class="absolute inset-0 will-change-transform opacity-70 mix-blend-soft-light"
+      class="absolute inset-0 will-change-transform opacity-40 mix-blend-soft-light"
       data-depth="0.18"
       style="
-        background-image: url('{{ url_for('static', filename='img/hero-koperasi-2.jpg') }}');
+        background-image: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1920&q=85');
         background-size: cover;
         background-position: center;
         transform: scale(1.10);
+      "
+    ></div>
+
+    <!-- Layer 3: Animated orbs untuk glow effect -->
+    <div class="absolute inset-0 will-change-transform" data-depth="0.12">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Layer 4: Accent photo finance/money (subtle) -->
+    <div
+      class="absolute inset-0 will-change-transform opacity-20 mix-blend-overlay"
+      data-depth="0.15"
+      style="
+        background-image: url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=1920&q=85');
+        background-size: cover;
+        background-position: center;
+        transform: scale(1.12);
       "
     ></div>
 
@@ -49,7 +70,7 @@
         <div class="space-y-6">
           <div class="inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
             <div class="h-10 w-10 rounded-xl bg-white/10 grid place-items-center border border-white/10">
-              <span class="text-lg"></span>
+              <span class="text-lg">🏦</span>
             </div>
             <div>
               <div class="text-xs tracking-widest text-white/70">SISTEM KOPERASI</div>
@@ -153,49 +174,53 @@
   const layers = Array.from(root.querySelectorAll("[data-depth]"));
   if (!layers.length) return;
 
-  // Parallax lembut: requestAnimationFrame + lerp
+  // ===== PARALLAX WITH SMOOTH LERP =====
   let targetX = 0, targetY = 0;
   let curX = 0, curY = 0;
-
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
   function onMove(e) {
     const w = window.innerWidth || 1;
     const h = window.innerHeight || 1;
-
-    // posisi mouse relatif center (-1..1)
     const x = (e.clientX / w) * 2 - 1;
     const y = (e.clientY / h) * 2 - 1;
-
-    // batasi supaya ga lebay
     targetX = clamp(x, -0.9, 0.9);
     targetY = clamp(y, -0.9, 0.9);
   }
 
   function animate() {
-    // smoothing (lerp)
-    curX += (targetX - curX) * 0.06;
-    curY += (targetY - curY) * 0.06;
+    curX += (targetX - curX) * 0.08;
+    curY += (targetY - curY) * 0.08;
 
-    // apply ke tiap layer
     for (const el of layers) {
       const depth = parseFloat(el.getAttribute("data-depth")) || 0.1;
-      const moveX = curX * 30 * depth; // px
-      const moveY = curY * 22 * depth; // px
+      const moveX = curX * 35 * depth;
+      const moveY = curY * 25 * depth;
       el.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(1.08)`;
     }
-
     requestAnimationFrame(animate);
   }
 
-  // desktop-only feel (mouse). Kalau ingin tetap aktif di mobile, bisa tambahin deviceorientation.
   window.addEventListener("mousemove", onMove, { passive: true });
   requestAnimationFrame(animate);
+
+  // ===== GRADIENT WAVE ANIMATION =====
+  const gradients = root.querySelectorAll('[class*="radial-gradient"]');
+  let hue = 0;
+  function animateGradient() {
+    hue = (hue + 0.3) % 360;
+    gradients.forEach((grad, i) => {
+      const offset = i * 60;
+      grad.style.filter = `hue-rotate(${(hue + offset) % 360}deg)`;
+    });
+    requestAnimationFrame(animateGradient);
+  }
+  if (gradients.length > 0) animateGradient();
 })();
 </script>
 
 <style>
-  /* Noise procedural (tanpa PNG) */
+  /* Noise procedural */
   .noise-layer {
     background-image:
       radial-gradient(circle at 10% 10%, rgba(255,255,255,0.18) 0 1px, transparent 2px),
@@ -204,6 +229,132 @@
     background-size: 120px 120px, 160px 160px, 200px 200px;
     background-position: 0 0, 40px 10px, 20px 60px;
     filter: contrast(120%) brightness(110%);
+  }
+
+  /* Animated gradient background */
+  @keyframes gradientShift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes gradientMove {
+    0%, 100% {
+      background-position: 0% 0%;
+    }
+    25% {
+      background-position: 100% 0%;
+    }
+    50% {
+      background-position: 100% 100%;
+    }
+    75% {
+      background-position: 0% 100%;
+    }
+  }
+
+  /* Floating orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    mix-blend-mode: screen;
+    animation: float 20s ease-in-out infinite;
+  }
+
+  .orb-1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.8) 0%, transparent 70%);
+    top: -10%;
+    left: -10%;
+    animation-duration: 25s;
+  }
+
+  .orb-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.6) 0%, transparent 70%);
+    bottom: -15%;
+    right: -10%;
+    animation-duration: 30s;
+    animation-delay: -5s;
+  }
+
+  .orb-3 {
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.5) 0%, transparent 70%);
+    top: 40%;
+    left: 50%;
+    animation-duration: 35s;
+    animation-delay: -10s;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(100px, -100px) scale(1.1);
+    }
+    66% {
+      transform: translate(-100px, 100px) scale(0.9);
+    }
+  }
+
+  /* Smooth scroll */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Glow effect on focus */
+  input:focus {
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15), 0 0 20px rgba(139, 92, 246, 0.2);
+  }
+
+  /* Card hover effect */
+  .w-full.max-w-md {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .w-full.max-w-md:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+  }
+
+  /* Button hover glow */
+  button[type="submit"] {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  button[type="submit"]:hover {
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+
+  button[type="submit"]::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(139, 92, 246, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  button[type="submit"]:hover::before {
+    width: 300px;
+    height: 300px;
   }
 </style>
 {% endblock %}

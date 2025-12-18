@@ -147,7 +147,7 @@
           <!-- Keperluan -->
           <div>
             <label for="keperluan" class="flex items-center gap-2 text-sm font-bold text-white mb-3">
-              <span class="text-xl">📋</span>
+              <span class="text-xl"></span>
               <span>Keperluan Pinjaman</span>
             </label>
             <textarea name="keperluan" id="keperluan" required rows="4"
@@ -175,8 +175,7 @@
       <div class="glass rounded-3xl shadow-2xl p-8 sticky top-4 border border-white/30">
         <!-- Header Kalkulator -->
         <div class="flex items-center gap-3 mb-8 pb-6 border-b border-white/30">
-          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center shadow-lg">
-            <span class="text-2xl">🧮</span>
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center shadow-lg"> 
           </div>
           <div>
             <h2 class="text-2xl font-bold text-white">Kalkulator</h2>
@@ -220,10 +219,10 @@
             <p id="calcTotal" class="text-4xl font-black text-white drop-shadow-lg">Rp 0</p>
           </div>
 
-          <!-- Angsuran -->
-          <div class="bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl p-6 shadow-2xl transform hover:scale-105 transition">
-            <p class="text-sm text-slate-900 font-bold mb-2">💳 Angsuran Per Bulan</p>
-            <p id="calcAngsuran" class="text-4xl font-black text-slate-900 drop-shadow">Rp 0</p>
+          <!-- Angsuran (warna disamakan dengan Total Pembayaran) -->
+          <div class="bg-gradient-to-br from-indigo-500/40 to-purple-600/40 rounded-2xl p-6 backdrop-blur border-2 border-white/40 shadow-xl transform hover:scale-105 transition">
+            <p class="text-sm text-white font-bold mb-2">💳 Angsuran Per Bulan</p>
+            <p id="calcAngsuran" class="text-4xl font-black text-white drop-shadow-lg">Rp 0</p>
           </div>
         </div>
 

@@ -1,0 +1,49 @@
+{% extends "base_app.html" %}
+{% block content %}
+<div class="mb-6">
+    <h1 class="text-2xl font-bold text-white">💰 Kelola Pengajuan Pinjaman</h1>
+    <p class="text-white/70">Daftar anggota yang mengajukan pinjaman uang.</p>
+</div>
+
+<div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+    <table class="w-full text-sm">
+        <thead class="bg-slate-900 text-white">
+            <tr>
+                <th class="px-4 py-3 text-left">Peminjam</th>
+                <th class="px-4 py-3 text-left">Jumlah</th>
+                <th class="px-4 py-3 text-left">Tenor</th>
+                <th class="px-4 py-3 text-center">Status</th>
+                <th class="px-4 py-3 text-center">Aksi</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+            {% for p in pengajuan %}
+            <tr>
+                <td class="px-4 py-4 font-bold">{{ p.peminjam }}</td>
+                <td class="px-4 py-4 text-blue-600 font-bold">Rp {{ "{:,.0f}".format(p.jumlah) }}</td>
+                <td class="px-4 py-4">{{ p.tenor }} Bulan</td>
+                <td class="px-4 py-4 text-center">
+                    {% if p.status == 'pending' %}
+                        <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs font-bold">Menunggu</span>
+                    {% elif p.status == 'approved' %}
+                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Disetujui</span>
+                    {% else %}
+                        <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold">Ditolak</span>
+                    {% endif %}
+                </td>
+                <td class="px-4 py-4 text-center">
+                    {% if p.status == 'pending' %}
+                    <div class="flex gap-2 justify-center">
+                        <a href="{{ url_for('approve_pinjaman', id=p.id) }}" class="bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-bold hover:bg-green-600">Terima</a>
+                        <a href="{{ url_for('reject_pinjaman', id=p.id) }}" class="bg-red-500 text-white px-3 py-1 rounded-lg text-xs font-bold hover:bg-red-600">Tolak</a>
+                    </div>
+                    {% else %}
+                        <span class="text-slate-400 italic">Selesai</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
